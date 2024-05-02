@@ -1,3 +1,3 @@
-module stock
+module gestaoStock
 
 go 1.22.2
