@@ -17,7 +17,6 @@ type Lote struct {
 	Lote            string
 	Validade        time.Time
 	Quantidade      int
-	Localizacao     string
 }
 
 type Inventario struct {
@@ -33,3 +32,6 @@ func (iv *Inventario) CriaNovoProduto(produto *Produto) {
 	iv.Produtos = append(iv.Produtos, produto)
 }
 
+func (iv *Inventario) CriaNovoLote(lote *Lote) {
+	iv.Lotes = append(iv.Lotes, lote)
+}
