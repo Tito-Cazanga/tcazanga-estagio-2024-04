@@ -44,3 +44,11 @@ func TestNovoProdutoDataDeValidade(t *testing.T) {
         t.Errorf("Data de validade esperada: %s, Data de validade retornada: %s", dataDeValidadeEsperada, p.DataDeValidade)
     }
 }
+
+func TestNovoLoteNaoNulo(t *testing.T) {
+    lote := inventario.NovoLote(1, "Lote001", 100, "CorredorA", "Armario1", "Prateleira2", 2024, 6, 1)
+
+    if lote == nil {
+        t.Error("O lote não deve ser nulo.")
+    }
+}
