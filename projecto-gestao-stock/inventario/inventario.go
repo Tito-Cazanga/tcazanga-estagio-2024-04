@@ -20,3 +20,13 @@ func (i Inventorio) OrganizarPorDataValidade() {
 	})
 }
 
+func (i Inventorio) RecomendarProdutosProximosAVencerimento() []Produto {
+	var proximosAVencerimento []Produto
+	for _, produto := range i {
+		if produto.DataValidade.Sub(time.Now()) < 30*24*time.Hour {
+			proximosAVencerimento = append(proximosAVencerimento, produto)
+		}
+	}
+	return proximosAVencerimento
+}
+
