@@ -8,14 +8,12 @@ import (
 type Produto struct {
 	ID             int
 	Nome           string
-	DataDeValidade time.Time
 }
 
-func NovoProduto(id int, nome string, dataDeValidade time.Time) *Produto {
+func NovoProduto(id int, nome string) *Produto {
 	return &Produto{
 		ID:             id,
 		Nome:           nome,
-		DataDeValidade: dataDeValidade,
 	}
 }
 

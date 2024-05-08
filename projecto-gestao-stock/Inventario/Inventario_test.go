@@ -3,12 +3,11 @@ package inventario_test
 import (
 	inventario "AcmeStock/Inventario"
 	"testing"
-	"time"
+
 )
 
-func TestNovoProdutoNaoNulo(t *testing.T) {
-    dataDeValidade := time.Now().AddDate(0, 1, 0) 
-    p := inventario.NovoProduto(1, "Produto Teste", dataDeValidade)
+func TestNovoProdutoNaoNulo(t *testing.T) { 
+    p := inventario.NovoProduto(1, "Produto Teste")
 
     if p == nil {
         t.Error("O produto não deve ser nulo.")
@@ -16,8 +15,8 @@ func TestNovoProdutoNaoNulo(t *testing.T) {
 }
 
 func TestNovoProdutoID(t *testing.T) {
-    dataDeValidade := time.Now().AddDate(0, 1, 0) 
-    p := inventario.NovoProduto(1, "Produto Teste", dataDeValidade)
+    
+    p := inventario.NovoProduto(1, "Produto Teste")
 
     if p.ID != 1 {
         t.Errorf("ID esperado: %d, ID retornado: %d", 1, p.ID)
@@ -25,23 +24,11 @@ func TestNovoProdutoID(t *testing.T) {
 }
 
 func TestNovoProdutoNome(t *testing.T) {
-    
-    dataDeValidade := time.Now().AddDate(0, 1, 0) 
 
-    p := inventario.NovoProduto(1, "Produto Teste", dataDeValidade)
+    p := inventario.NovoProduto(1, "Produto Teste")
 
     if p.Nome != "Produto Teste" {
         t.Errorf("Nome esperado: %s, Nome retornado: %s", "Produto Teste", p.Nome)
-    }
-}
-
-func TestNovoProdutoDataDeValidade(t *testing.T) {
-    dataDeValidadeEsperada := time.Now().AddDate(2024, 05, 8) 
-    
-    p := inventario.NovoProduto(1, "Produto Teste", dataDeValidadeEsperada)
-
-    if p.DataDeValidade != dataDeValidadeEsperada {
-        t.Errorf("Data de validade esperada: %s, Data de validade retornada: %s", dataDeValidadeEsperada, p.DataDeValidade)
     }
 }
 
@@ -74,5 +61,17 @@ func TestNovoLoteQuantidade(t *testing.T) {
 
     if lote.Quantidade != 100 {
         t.Errorf("Quantidade esperada: %d, Quantidade retornada: %d", 100, lote.Quantidade)
+    }
+}
+
+func TestNovoLoteLocalizacao(t *testing.T) {
+    lote := inventario.NovoLote(1, "Lote001", 100, "CorredorA", "Armario1", "Prateleira2", 2024, 6, 1)
+
+    corredorEsperado := "CorredorA"
+    armarioEsperado := "Armario1"
+    prateleiraEsperada := "Prateleira2"
+
+    if lote.Localizacao.Corredor != corredorEsperado || lote.Localizacao.Armario != armarioEsperado || lote.Localizacao.Prateleira != prateleiraEsperada {
+        t.Errorf("Localização esperada: Corredor %s, Armário %s, Prateleira %s, Localização retornada: Corredor %s, Armário %s, Prateleira %s", corredorEsperado, armarioEsperado, prateleiraEsperada, lote.Localizacao.Corredor, lote.Localizacao.Armario, lote.Localizacao.Prateleira)
     }
 }
