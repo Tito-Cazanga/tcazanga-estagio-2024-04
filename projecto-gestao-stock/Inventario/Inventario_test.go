@@ -93,7 +93,7 @@ func TestRecomendarLotes(t *testing.T) {
     lote2 := inventario.NovoLote(2, "Lote002", 50, "CorredorB", "Armario2", "Prateleira1", 2024, 6, 15)
 
     lote3 := inventario.NovoLote(3, "Lote003", 200, "CorredorC", "Armario3", "Prateleira3", 2024, 5, 20)
-    
+
     lotes := []*inventario.Lote{lote1, lote2, lote3}
 
     lotesRecomendados := inventario.RecomendarLotes(lotes)
@@ -104,7 +104,7 @@ func TestRecomendarLotes(t *testing.T) {
 
     // Verifica se os lotes estão ordenados por proximidade da validade
     for i := 0; i < len(lotesRecomendados)-1; i++ {
-        
+
         if lotesRecomendados[i].DiasParaValidade() > lotesRecomendados[i+1].DiasParaValidade() {
             t.Errorf("Os lotes não estão ordenados corretamente por proximidade da validade")
             break
