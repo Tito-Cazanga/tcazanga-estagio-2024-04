@@ -1,4 +1,4 @@
-package inventario_test
+package main_test
 
 import (
 	inventario "AcmeStock/Inventario"
@@ -83,5 +83,31 @@ func TestNovoLoteDataDeValidade(t *testing.T) {
 
     if lote.DataDeValidade != dataDeValidadeEsperada {
         t.Errorf("Data de validade esperada: %s, Data de validade retornada: %s", dataDeValidadeEsperada, lote.DataDeValidade)
+    }
+}
+
+func TestRecomendarLotes(t *testing.T) {
+
+    lote1 := inventario.NovoLote(1, "Lote001", 100, "CorredorA", "Armario1", "Prateleira2", 2024, 6, 1)
+
+    lote2 := inventario.NovoLote(2, "Lote002", 50, "CorredorB", "Armario2", "Prateleira1", 2024, 6, 15)
+
+    lote3 := inventario.NovoLote(3, "Lote003", 200, "CorredorC", "Armario3", "Prateleira3", 2024, 5, 20)
+    
+    lotes := []*inventario.Lote{lote1, lote2, lote3}
+
+    lotesRecomendados := inventario.RecomendarLotes(lotes)
+
+    if len(lotesRecomendados) != len(lotes) {
+        t.Errorf("O número de lotes recomendados (%d) deve ser igual ao número de lotes originais (%d)", len(lotesRecomendados), len(lotes))
+    }
+
+    // Verifica se os lotes estão ordenados por proximidade da validade
+    for i := 0; i < len(lotesRecomendados)-1; i++ {
+        
+        if lotesRecomendados[i].DiasParaValidade() > lotesRecomendados[i+1].DiasParaValidade() {
+            t.Errorf("Os lotes não estão ordenados corretamente por proximidade da validade")
+            break
+        }
     }
 }
