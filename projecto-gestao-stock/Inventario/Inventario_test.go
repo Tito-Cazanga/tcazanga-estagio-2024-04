@@ -60,3 +60,11 @@ func TestNovoLoteIDDoProduto(t *testing.T) {
         t.Errorf("ID do produto esperado: %d, ID do produto retornado: %d", 1, lote.ProdutoID)
     }
 }
+
+func TestNovoLoteLote(t *testing.T) {
+    lote := inventario.NovoLote(1, "Lote001", 100, "CorredorA", "Armario1", "Prateleira2", 2024, 6, 1)
+
+    if lote.Lote != "Lote001" {
+        t.Errorf("Lote esperado: %s, Lote retornado: %s", "Lote001", lote.Lote)
+    }
+}
