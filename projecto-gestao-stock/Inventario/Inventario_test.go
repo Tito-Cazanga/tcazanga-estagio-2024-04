@@ -34,3 +34,13 @@ func TestNovoProdutoNome(t *testing.T) {
         t.Errorf("Nome esperado: %s, Nome retornado: %s", "Produto Teste", p.Nome)
     }
 }
+
+func TestNovoProdutoDataDeValidade(t *testing.T) {
+    dataDeValidadeEsperada := time.Now().AddDate(2024, 05, 8) 
+    
+    p := inventario.NovoProduto(1, "Produto Teste", dataDeValidadeEsperada)
+
+    if p.DataDeValidade != dataDeValidadeEsperada {
+        t.Errorf("Data de validade esperada: %s, Data de validade retornada: %s", dataDeValidadeEsperada, p.DataDeValidade)
+    }
+}
