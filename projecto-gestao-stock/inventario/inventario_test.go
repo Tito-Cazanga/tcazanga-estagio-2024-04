@@ -1,22 +1,27 @@
-package inventario_test
+// inventario_test.go
+package inventario
 
 import (
 	"testing"
+	"time"
 )
 
-func TestAdicionarProduto(t *testing.T) {
-    // Testa a função AddProduct para garantir que um produto seja adicionado corretamente ao inventário
-    // Setup
-    inventario := NewInventario()
-    produto := Produto{Nome: "Produto X", Categoria: "Categoria A", Validade: "2024-05-31"}
-    
-    // Execução
-    inventario.AdicionarProduto(produto)
-    
-    // Verificação
-    if len(inventario.Produtos) != 1 {
-        t.Errorf("Esperava-se que o inventário tivesse 1 produto, mas encontrou %d", len(inventario.Produtos))
-    }
-}
+func TestOrganizarPorDataValidade(t *testing.T) {
+	inventario := Inventorio{
+		{Nome: "Produto 1", DataValidade: time.Date(2023, 3, 15, 0, 0, 0, 0, time.UTC)},
+		{Nome: "Produto 2", DataValidade: time.Date(2023, 2, 10, 0, 0, 0, 0, time.UTC)},
+		{Nome: "Produto 3", DataValidade: time.Date(2023, 4, 20, 0, 0, 0, 0, time.UTC)},
+	}
 
-// Testes similares para outras funcionalidades de gerenciamento de inventário, como UpdateProduct e RemoveProduct
+	inventario.OrganizarPorDataValidade()
+
+	expected := Inventorio{
+		{Nome: "Produto 2", DataValidade: time.Date(2023, 2, 10, 0, 0, 0, 0, time.UTC)},
+		{Nome: "Produto 1", DataValidade: time.Date(2023, 3, 15, 0, 0, 0, 0, time.UTC)},
+		{Nome: "Produto 3", DataValidade: time.Date(2023, 4, 20, 0, 0, 0, 0, time.UTC)},
+	}
+
+	if!equalInventorio(inventario, expected) {
+		t.Errorf("Inventorio não foi organizado corretamente")
+	}
+}
