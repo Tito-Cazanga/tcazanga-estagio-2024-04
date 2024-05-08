@@ -44,3 +44,26 @@ func TestRecomendarProdutosProximosAVencerimento(t *testing.T) {
 	}
 }
 
+func equalInventorio(a, b Inventorio) bool {
+	if len(a)!= len(b) {
+		return false
+	}
+	for i := range a {
+		if a[i].Nome!= b[i].Nome || a[i].DataValidade!= b[i].DataValidade {
+			return false
+		}
+	}
+	return true
+}
+
+func equalProdutos(a, b []Produto) bool {
+	if len(a)!= len(b) {
+		return false
+	}
+	for i := range a {
+		if a[i].Nome!= b[i].Nome || a[i].DataValidade!= b[i].DataValidade {
+			return false
+		}
+	}
+	return true
+}

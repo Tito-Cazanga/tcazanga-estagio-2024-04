@@ -30,3 +30,10 @@ func (i Inventorio) RecomendarProdutosProximosAVencerimento() []Produto {
 	return proximosAVencerimento
 }
 
+func (i Inventorio) String() string {
+	var str string
+	for _, produto := range i {
+		str += fmt.Sprintf("Produto: %s, Data Validade: %v\n", produto.Nome, produto.DataValidade)
+	}
+	return str
+}
