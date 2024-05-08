@@ -32,7 +32,8 @@ type Localizacao struct {
 }
 
 func NovoLote(produtoID int, lote string, quantidade int, corredor, armario, prateleira string, ano, mes, dia int) *Lote {
-    dataDeValidade := time.Now().AddDate(ano, mes, dia)
+    dataDeValidade := time.Date(ano, time.Month(mes), dia, 0, 0, 0, 0, time.UTC)
+
     localizacao := Localizacao{
         Corredor:    corredor,
         Armario:     armario,

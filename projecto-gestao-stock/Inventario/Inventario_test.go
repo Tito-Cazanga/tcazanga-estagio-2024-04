@@ -3,7 +3,7 @@ package inventario_test
 import (
 	inventario "AcmeStock/Inventario"
 	"testing"
-
+	"time"
 )
 
 func TestNovoProdutoNaoNulo(t *testing.T) { 
@@ -73,5 +73,15 @@ func TestNovoLoteLocalizacao(t *testing.T) {
 
     if lote.Localizacao.Corredor != corredorEsperado || lote.Localizacao.Armario != armarioEsperado || lote.Localizacao.Prateleira != prateleiraEsperada {
         t.Errorf("Localização esperada: Corredor %s, Armário %s, Prateleira %s, Localização retornada: Corredor %s, Armário %s, Prateleira %s", corredorEsperado, armarioEsperado, prateleiraEsperada, lote.Localizacao.Corredor, lote.Localizacao.Armario, lote.Localizacao.Prateleira)
+    }
+}
+
+func TestNovoLoteDataDeValidade(t *testing.T) {
+    lote := inventario.NovoLote(1, "Lote001", 100, "CorredorA", "Armario1", "Prateleira2", 2024, 6, 1)
+    
+    dataDeValidadeEsperada := time.Date(2024, time.Month(6), 1, 0, 0, 0, 0, time.UTC)
+
+    if lote.DataDeValidade != dataDeValidadeEsperada {
+        t.Errorf("Data de validade esperada: %s, Data de validade retornada: %s", dataDeValidadeEsperada, lote.DataDeValidade)
     }
 }
