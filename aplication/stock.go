@@ -4,15 +4,13 @@ import (
 	//"fmt"
 	"time"
 )
-
-// Produto representa um item no estoque
 type Produto struct {
 	Nome        string
 	Validade    time.Time
 	Quantidade  int
 }
 
-// Verifica produtos próximos à data de validade e produtos expirados
+
 func verificarValidade(produtos []Produto) (proximosValidade []Produto, expirados []Produto) {
 	tempoAtual := time.Now()
 
@@ -29,7 +27,6 @@ func verificarValidade(produtos []Produto) (proximosValidade []Produto, expirado
 	return proximosValidade, expirados
 }
 
-// Remove produtos expirados do estoque
 func removerProdutosExpirados(produtos *[]Produto) {
 	tempoAtual := time.Now()
 
