@@ -8,8 +8,10 @@ import (
 func TestVerificarValidade_ProximosEExpirados(t *testing.T) {
 	// Arrange
 	produtos := []Produto{
+		{Nome: "Whey Protein", Validade: time.Date(2024, time.June, 1, 0, 0, 0, 0, time.UTC), Quantidade: 10},
 		{Nome: "BCAA", Validade: time.Date(2024, time.May, 20, 0, 0, 0, 0, time.UTC), Quantidade: 5},
-		{Nome: "Creatina", Validade: time.Date(2024, time.August, 10, 0, 0, 0, 0, time.UTC), Quantidade: 8}, 
+		{Nome: "Creatina", Validade: time.Date(2024, time.August, 10, 0, 0, 0, 0, time.UTC), Quantidade: 8},
+        {Nome: "Creatina", Validade: time.Date(2024, time.May, 10, 0, 0, 0, 0, time.UTC), Quantidade: 8},
 	}
 
 	// Act
@@ -25,6 +27,7 @@ func TestVerificarValidade_ProximosEExpirados(t *testing.T) {
 		t.Errorf("Esperado 1 produto expirado, mas encontrados %d", len(expirados))
 	}
 }
+
 
 func TestRemoverExpirados(t *testing.T) {
 	// Arrange
