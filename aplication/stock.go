@@ -39,3 +39,12 @@ func removerProdutosExpirados(produtos *[]Produto) {
 	}
 	*produtos = produtosFiltrados
 }
+// ExisteProduto verifica se um produto existe na lista de produtos
+func ExisteProduto(produtos []Produto, nomeProduto string) bool {
+	for _, p := range produtos {
+		if p.Nome == nomeProduto {
+			return true
+		}
+	}
+	return false
+}

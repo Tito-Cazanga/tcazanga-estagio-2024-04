@@ -5,6 +5,64 @@ import (
 	"time"
 )
 
+func TestExisteProduto(t *testing.T) {
+	// Arrange: Definindo uma lista de produtos
+	produtos := []Produto{
+		{Nome: "Produto A", Validade: time.Now().Add(6 * 24 * time.Hour), Quantidade: 10},
+		{Nome: "Produto B", Validade: time.Now().Add(10 * 24 * time.Hour), Quantidade: 5},
+		{Nome: "Produto C", Validade: time.Now().Add(15 * 24 * time.Hour), Quantidade: 8},
+	}
+
+	// Act & Assert: Verificando se os produtos existem na lista
+	if !ExisteProduto(produtos, "Produto A") {
+		t.Errorf("Esperado que Produto A existisse na lista, mas não foi encontrado")
+	}
+
+	if !ExisteProduto(produtos, "Produto B") {
+		t.Errorf("Esperado que Produto B existisse na lista, mas não foi encontrado")
+	}
+
+	if !ExisteProduto(produtos, "Produto C") {
+		t.Errorf("Esperado que Produto C existisse na lista, mas não foi encontrado")
+	}
+
+	if ExisteProduto(produtos, "Produto D") {
+		t.Errorf("Esperado que Produto D não existisse na lista, mas foi encontrado")
+	}
+}
+func TestExisteProduto_Presente(t *testing.T) {
+	// Arrange: Definindo uma lista de produtos
+	produtos := []Produto{
+		{Nome: "Produto A", Validade: time.Now().Add(6 * 24 * time.Hour), Quantidade: 10},
+		{Nome: "Produto B", Validade: time.Now().Add(10 * 24 * time.Hour), Quantidade: 5},
+		{Nome: "Produto C", Validade: time.Now().Add(15 * 24 * time.Hour), Quantidade: 8},
+	}
+
+	// Act: Verificando se o produto "Produto B" existe na lista
+	existe := ExisteProduto(produtos, "Produto B")
+
+	// Assert: Verificando se a função retorna true quando o produto está presente na lista
+	if !existe {
+		t.Errorf("Esperado que Produto B existisse na lista, mas não foi encontrado")
+	}
+}
+func TestExisteProduto_Ausente(t *testing.T) {
+	// Arrange: Definindo uma lista de produtos
+	produtos := []Produto{
+		{Nome: "Produto A", Validade: time.Now().Add(6 * 24 * time.Hour), Quantidade: 10},
+		{Nome: "Produto B", Validade: time.Now().Add(10 * 24 * time.Hour), Quantidade: 5},
+		{Nome: "Produto C", Validade: time.Now().Add(15 * 24 * time.Hour), Quantidade: 8},
+	}
+
+	// Act: Verificando se o produto "Produto D" existe na lista
+	existe := ExisteProduto(produtos, "Produto D")
+
+	// Assert: Verificando se a função retorna false quando o produto não está presente na lista
+	if existe {
+		t.Errorf("Esperado que Produto D não existisse na lista, mas foi encontrado")
+	}
+}
+
 func TestVerificarValidade_ProximosEExpirados(t *testing.T) {
 	// Arrange
 	produtos := []Produto{
