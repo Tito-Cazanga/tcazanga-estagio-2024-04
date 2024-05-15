@@ -87,3 +87,31 @@ func TestAbastecerExpositor_ProdutoDiferente(t *testing.T){
 	}
 }
 
+func TestAbastecerExpositor_ExpositorVazio(t *testing.T) {
+	// Arrange
+	expositor := &application.Expositor{
+		ID: "45",
+		Localizacao: "Ginásio H",
+		Estoque: make(map[int]int),
+	}
+
+	comando := &application.AbastecerExpositor{
+		ExpositorID: "45",
+		ProdutoID: 14,
+		Quantidade: 15,
+	}
+
+	// Act
+	evento := comando.Executar(expositor)
+
+	// Assert
+	if evento.ExpositorID != "45" {
+		t.Error("O evento deveria conter o ID do expositor 45")
+	}
+
+	if expositor.Estoque[14] != 15 {
+		t.Errorf("O estoque do expositor deveria ser 15 para 0 produto %v", evento.ProdutoID)
+	}
+}
+
+
