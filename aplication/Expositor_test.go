@@ -12,6 +12,7 @@ func TestAbastecerExpositor(t *testing.T) {
 		Localizacao: "Ginasio A",
 		Estoque: make(map[int]int),
 	}
+
 	comando := application.AbastecerExpositor{
 		ExpositorID: "1",
 		ProdutoID: 1,
@@ -30,3 +31,33 @@ func TestAbastecerExpositor(t *testing.T) {
 		t.Error("O estoque do expositor está incorrecto após o abastecimento")
 	}
 }
+
+func TestAbastecerExpositor_DoisAbastecimentos(t *testing.T) {
+	// Arrange
+	expositor := &application.Expositor{
+		ID: "2",
+		Localizacao: "Ginásio D",
+		Estoque: make(map[int]int),
+	}
+
+	comando := &application.AbastecerExpositor{
+		ExpositorID: "2",
+		ProdutoID: 1,
+		Quantidade: 10,
+	}
+
+	// Act
+	comando.Executar(expositor)
+	evento2 := comando.Executar(expositor)
+
+	// Assert
+	if evento2.Quantidade != 10 {
+		t.Errorf("O segundo abasteciemto deveria adicionar 10 unidades")
+	}
+
+	if  expositor.Estoque[1] != 20 {
+		t.Errorf("O estoque do expositor deveria ser 20 após o segundo abastecimento")
+	}
+}
+
+
