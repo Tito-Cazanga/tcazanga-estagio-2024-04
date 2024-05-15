@@ -20,7 +20,7 @@ func TestAbastecerExpositor(t *testing.T) {
 	}
 
 	//Act
-	evento := comando.Executar(expositor)
+	evento := comando.ExecutarAbastecerExpositor(expositor)
 	
 	//Assert
 	if evento.ExpositorID != "1" || evento.ProdutoID != 1 || evento.Quantidade != 10 {
@@ -47,8 +47,8 @@ func TestAbastecerExpositor_DoisAbastecimentos(t *testing.T) {
 	}
 
 	// Act
-	comando.Executar(expositor)
-	evento2 := comando.Executar(expositor)
+	comando.ExecutarAbastecerExpositor(expositor)
+	evento2 := comando.ExecutarAbastecerExpositor(expositor)
 
 	// Assert
 	if evento2.Quantidade != 10 {
@@ -75,10 +75,10 @@ func TestAbastecerExpositor_ProdutoDiferente(t *testing.T){
 	}
 
 	//Act
-	evento := comando.Executar(expositor)
+	evento := comando.ExecutarAbastecerExpositor(expositor)
 	
 	//Assert
-	if evento.ProdutoID != 12{
+	if evento.ProdutoID != 12 {
 		t.Error("ID do produto errado")
 	}
 
@@ -102,7 +102,7 @@ func TestAbastecerExpositor_ExpositorVazio(t *testing.T) {
 	}
 
 	// Act
-	evento := comando.Executar(expositor)
+	evento := comando.ExecutarAbastecerExpositor(expositor)
 
 	// Assert
 	if evento.ExpositorID != "45" {
@@ -114,4 +114,32 @@ func TestAbastecerExpositor_ExpositorVazio(t *testing.T) {
 	}
 }
 
+func TestConsumoRegistrado_AposAbastecimentoExpositor(t *testing.T) {
+	// Arrange
+	expositor := &application.Expositor{
+		ID:          "1",
+		Localizacao: "Ginásio A",
+		Estoque:     map[int]int{1: 10},
+	}
+	cmd := &application.ConsumirProduto{
+		ExpositorID: 1,
+		ProdutoID:   1,
+		Quantidade:  5, 
+	}
 
+	// Act
+	event := cmd.Executar(expositor)
+
+	// Assert
+	if event.GinásioID != "1" {
+		t.Errorf("O ID do ginásio no evento está incorreto")
+	}
+
+	if event.ProdutoID != 1 {
+		t.Errorf("O ID do produto no evento está incorreto")
+	}
+
+	if event.Quantidade != 5 {
+		t.Errorf("A quantidade no evento está incorreta")
+	}
+}

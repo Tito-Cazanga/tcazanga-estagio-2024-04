@@ -1,10 +1,5 @@
 package application
 
-type Produto struct{
-	ID int
-
-}
-
 type Expositor struct {
 	ID 				string
 	Localizacao 	string
@@ -12,20 +7,31 @@ type Expositor struct {
 
 }
 
-type ExpositorAbastecido struct{
+type ExpositorAbastecido struct {
 	ExpositorID string
 	ProdutoID 	int
 	Quantidade 	int
 }
 
-type AbastecerExpositor struct{
+type AbastecerExpositor struct {
 	ExpositorID string
 	ProdutoID 	int
 	Quantidade 	int
 }
 
+type ConsumoRegistrado struct {
+	GinásioID  string
+	ProdutoID  int
+	Quantidade int
+}
 
-func (comando *AbastecerExpositor) Executar(expositor *Expositor) *ExpositorAbastecido {
+type ConsumirProduto struct {
+	ExpositorID int
+	ProdutoID   int
+	Quantidade  int
+}
+
+func (comando *AbastecerExpositor) ExecutarAbastecerExpositor(expositor *Expositor) *ExpositorAbastecido {
 	if expositor.Estoque == nil {
 		expositor.Estoque = make(map[int]int)
 	}
@@ -36,5 +42,25 @@ func (comando *AbastecerExpositor) Executar(expositor *Expositor) *ExpositorAbas
 		ExpositorID: comando.ExpositorID,
 		ProdutoID: comando.ProdutoID,
 		Quantidade: comando.Quantidade,
+	}
+}
+
+func (cmd *ConsumirProduto) Executar(expositor *Expositor) *ConsumoRegistrado {
+	// Verificar se o expositor possui o produto em estoque
+	quantidadeEstoque, ok := expositor.Estoque[cmd.ProdutoID]
+	if !ok {
+		return nil
+	}
+
+	if quantidadeEstoque < cmd.Quantidade {
+		return nil
+	}
+
+	expositor.Estoque[cmd.ProdutoID] -= cmd.Quantidade
+
+	return &ConsumoRegistrado{
+		GinásioID:  expositor.ID,
+		ProdutoID:  cmd.ProdutoID,
+		Quantidade: cmd.Quantidade,
 	}
 }
