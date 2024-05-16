@@ -1,5 +1,13 @@
 package application
 
+import "time"
+
+type Produto struct { 
+	Nome string
+	Quantidade int 
+	Validade time.Time
+}
+
 type Expositor struct {
 	ID 				string
 	Localizacao 	string
@@ -45,22 +53,40 @@ func (comando *AbastecerExpositor) ExecutarAbastecerExpositor(expositor *Exposit
 	}
 }
 
-func (cmd *ConsumirProduto) Executar(expositor *Expositor) *ConsumoRegistrado {
+func (comando *ConsumirProduto) Executar(expositor *Expositor) *ConsumoRegistrado {
 	// Verificar se o expositor possui o produto em estoque
-	quantidadeEstoque, ok := expositor.Estoque[cmd.ProdutoID]
+	quantidadeEstoque, ok := expositor.Estoque[comando.ProdutoID]
 	if !ok {
 		return nil
 	}
 
-	if quantidadeEstoque < cmd.Quantidade {
+	if quantidadeEstoque < comando.Quantidade {
 		return nil
 	}
 
-	expositor.Estoque[cmd.ProdutoID] -= cmd.Quantidade
+	expositor.Estoque[comando.ProdutoID] -= comando.Quantidade
 
 	return &ConsumoRegistrado{
 		GinásioID:  expositor.ID,
-		ProdutoID:  cmd.ProdutoID,
-		Quantidade: cmd.Quantidade,
+		ProdutoID:  comando.ProdutoID,
+		Quantidade: comando.Quantidade,
 	}
+}
+
+func VenderProduto(produtos *[]Produto, nomeProduto string, quantidadeVendida int) {
+	for i, p := range *produtos {
+		if p.Nome == nomeProduto {
+			(*produtos)[i].Quantidade -= quantidadeVendida
+			break
+		}
+	}
+}
+
+func VerificarProdutoNoExpositor(produtos *[]Produto, produtoEsperado Produto) bool {
+	for _, p := range *produtos {
+		if p.Nome == produtoEsperado.Nome && p.Quantidade == produtoEsperado.Quantidade {
+			return true
+		}
+	}
+	return false
 }

@@ -3,6 +3,7 @@ package application_test
 import (
 	application "fitness/aplication"
 	"testing"
+	"time"
 )
 
 func TestAbastecerExpositor(t *testing.T) {
@@ -114,6 +115,27 @@ func TestAbastecerExpositor_ExpositorVazio(t *testing.T) {
 	}
 }
 
+func TestVendaDeProduto_AposExpositorAbastecido(t *testing.T) {
+	// Arrange
+	produtos := &[]application.Produto{
+		{Nome: "Produto A", Validade: time.Now().Add(6 * 24 * time.Hour), Quantidade: 10},
+		{Nome: "Produto B", Validade: time.Now().Add(10 * 24 * time.Hour), Quantidade: 5},
+	}
+
+	// Act
+	produtoVendido := "Produto A"
+	quantidadeVendida := 3
+	application.VenderProduto(produtos, produtoVendido, quantidadeVendida)
+
+	// Assert
+	produtoEsperado := application.Produto{Nome: "Produto A", Validade: time.Now().Add(6 * 24 * time.Hour), Quantidade: 7}
+
+
+	if !application.VerificarProdutoNoExpositor(produtos, produtoEsperado) {
+		t.Errorf("Quantidade disponível do produto no expositor não foi reduzida corretamente após a venda")
+	}
+}
+
 func TestConsumoRegistrado_AposAbastecimentoExpositor(t *testing.T) {
 	// Arrange
 	expositor := &application.Expositor{
@@ -121,25 +143,26 @@ func TestConsumoRegistrado_AposAbastecimentoExpositor(t *testing.T) {
 		Localizacao: "Ginásio A",
 		Estoque:     map[int]int{1: 10},
 	}
-	cmd := &application.ConsumirProduto{
+	comando := &application.ConsumirProduto{
 		ExpositorID: 1,
 		ProdutoID:   1,
 		Quantidade:  5, 
 	}
 
 	// Act
-	event := cmd.Executar(expositor)
+	evento := comando.Executar(expositor)
 
 	// Assert
-	if event.GinásioID != "1" {
+	if evento.GinásioID != "1" {
 		t.Errorf("O ID do ginásio no evento está incorreto")
 	}
 
-	if event.ProdutoID != 1 {
+	if evento.ProdutoID != 1 {
 		t.Errorf("O ID do produto no evento está incorreto")
 	}
 
-	if event.Quantidade != 5 {
+	if evento.Quantidade != 5 {
 		t.Errorf("A quantidade no evento está incorreta")
 	}
 }
+
