@@ -215,7 +215,7 @@ func TestConsumoRegistrado_AposExpositorAbastecido(t *testing.T) {
 	}
 
 	// Act
-	evento := comando.ConsumirExpositor(expositor)
+	evento := comando.RegistrarConsumo(expositor)
 
 	// Assert
 	if evento.GinásioID != "1" {

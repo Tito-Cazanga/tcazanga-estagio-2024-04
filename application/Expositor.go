@@ -73,7 +73,7 @@ func VerificarProdutoNoExpositor(produtos *[]Produto, produtoEsperado Produto) b
 	return false
 }
 
-func (comando *ConsumirProduto) ConsumirExpositor(expositor *Expositor) *ConsumoRegistrado {
+func (comando *ConsumirProduto) RegistrarConsumo(expositor *Expositor) *ConsumoRegistrado {
 	// Verificar se o expositor possui o produto em estoque
 	quantidadeEstoque, ok := expositor.Estoque[comando.ProdutoID]
 	if !ok {
