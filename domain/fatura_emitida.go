@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-type FaturaEmitida struct {
+type Fatura struct {
 	ID           string
 	DataEmissao  time.Time
 	GinásioID    string
@@ -15,7 +15,7 @@ type FaturaEmitida struct {
 	Consumos     []*ConsumoRegistrado
 }
 
-func EmitirFatura(ginásioID string, consumos []*ConsumoRegistrado) (*FaturaEmitida, error) {
+func FaturaEmitida(ginásioID string, consumos []*ConsumoRegistrado) (*Fatura, error) {
 	if len(consumos) == 0 {
 		return nil, errors.New("a lista de consumos não pode estar vazia")
 	}
@@ -26,7 +26,7 @@ func EmitirFatura(ginásioID string, consumos []*ConsumoRegistrado) (*FaturaEmit
 		total += float64(consumo.Quantidade) * precoProduto
 	}
 
-	return &FaturaEmitida{
+	return &Fatura{
 		ID:           generateID(),     
 		DataEmissao:  time.Now(),      
 		GinásioID:    ginásioID,
