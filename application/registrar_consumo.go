@@ -25,7 +25,7 @@ func (comando *ConsumirProduto) RegistrarConsumo(expositor *Expositor) *domain.C
 	expositor.Estoque[comando.ProdutoID] -= comando.Quantidade
 
 	return &domain.ConsumoRegistrado{
-		GinásioID:  expositor.ID,
+		GinasioID:  expositor.ID,
 		ProdutoID:  comando.ProdutoID,
 		Quantidade: comando.Quantidade,
 	}

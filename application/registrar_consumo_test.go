@@ -22,7 +22,7 @@ func TestConsumoRegistrado_AposExpositorAbastecido(t *testing.T) {
 	evento := comando.RegistrarConsumo(expositor)
 
 	// Assert
-	if evento.GinásioID != "1" {
+	if evento.GinasioID != "1" {
 		t.Errorf("O ID do ginásio no evento está incorreto")
 	}
 
