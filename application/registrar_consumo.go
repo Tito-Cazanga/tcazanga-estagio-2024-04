@@ -10,11 +10,11 @@ type ConsumirProduto struct {
 	Quantidade  int
 }
 
-
 func (comando *ConsumirProduto) RegistrarConsumo(expositor *Expositor) *domain.ConsumoRegistrado {
+
 	// Verificar se o expositor possui o produto em estoque
-	quantidadeEstoque, ok := expositor.Estoque[comando.ProdutoID]
-	if !ok {
+	quantidadeEstoque, funcionar := expositor.Estoque[comando.ProdutoID]
+	if !funcionar {
 		return nil
 	}
 
