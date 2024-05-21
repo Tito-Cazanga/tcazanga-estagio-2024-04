@@ -7,20 +7,24 @@ import (
 	"testing"
 )
 
-func TestEmitirFatura_Execute(t *testing.T) {
-	consumos := []*domain.ConsumoRegistrado{
-		{GinasioID: "ginásio1", ProdutoID: 1, Quantidade: 5},
-		{GinasioID: "ginásio1", ProdutoID: 2, Quantidade: 10},
-	}
+func TestEmitirFatura(t *testing.T) {
+	
+	t.Run("Teste emitir uma nova fatura", func(t *testing.T) {
+		// Arrange
+		consumos := []*domain.ConsumoRegistrado{
+			{GinasioID: "ginásio1", ProdutoID: 1, Quantidade: 5},
+			{GinasioID: "ginásio1", ProdutoID: 2, Quantidade: 10},
+		}
+	
+		comando := &application.EmitirFatura{
+			GinasioID: "ginásio1",
+			Consumos:  consumos,
+		}
 
-	comando := &application.EmitirFatura{
-		GinasioID: "ginásio1",
-		Consumos:  consumos,
-	}
+		// Act
+		fatura, err := comando.NewFatura()
 
-	fatura, err := comando.Executar()
-	t.Run("Consumos não vazios", func(t *testing.T) {
-
+		// Assert
 		if err != nil {
 			t.Errorf("Erro inesperado ao emitir a fatura: %v", err)
 		}
@@ -30,24 +34,23 @@ func TestEmitirFatura_Execute(t *testing.T) {
 		}
 
 		if fatura.GinasioID != "ginásio1" {
-			t.Errorf("ID do ginásio na fatura incorreto: esperado: ginásio1, obtido: %s", fatura.GinasioID)
+			t.Errorf("ID do ginásio na fatura incorreto: esperado: ginásio1, recebido: %s", fatura.GinasioID)
 		}
 	})
 
-	t.Run("Consumos vazios", func(t *testing.T) {
+	t.Run("Teste emitir uma nova mesmo sem consumos no ginásio", func(t *testing.T) {
+		// Arrange
 		comandoConsumosVazios := &application.EmitirFatura{
 			GinasioID: "ginásio2",
 			Consumos:  []*domain.ConsumoRegistrado{},
 		}
 
-		fatura, err = comandoConsumosVazios.Executar()
+		// Act
+		fatura, err := comandoConsumosVazios.NewFatura()
 
-		if err == nil {
-			t.Error("Esperava-se um erro ao emitir uma fatura com consumos vazios")
-		}
-
+		// Assert
 		if !errors.Is(err, application.ErrListaConsumosVazia) {
-			t.Errorf("Erro esperado ErrListaConsumosVazia não encontrado: %v", err)
+			t.Errorf("Esperado: fatura vazia, recebido: %v", fatura)
 		}
 	})
 }
