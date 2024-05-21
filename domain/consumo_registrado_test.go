@@ -7,11 +7,11 @@ import (
 
 func TestNewConsumoRegistrado(t *testing.T) {
 	
-	ginásioID := "ginásio1"
+	ginasioID := "ginásio1"
 	produtoID := 1
 	quantidade := 10
 
-	consumo, err :=  domain.NewConsumoRegistrado(ginásioID, produtoID, quantidade)
+	consumo, err :=  domain.NewConsumoRegistrado(ginasioID, produtoID, quantidade)
 
 	t.Run("Quantidade positiva", func(t *testing.T) {
 		
@@ -23,8 +23,8 @@ func TestNewConsumoRegistrado(t *testing.T) {
 			t.Error("O objeto ConsumoRegistrado não deveria ser nulo")
 		}
 	
-		if consumo.GinásioID != ginásioID {
-			t.Errorf("GinásioID esperado: %s, obtido: %s", ginásioID, consumo.GinásioID)
+		if consumo.GinasioID != ginasioID {
+			t.Errorf("GinásioID esperado: %s, obtido: %s", ginasioID, consumo.GinasioID)
 		}
 	
 		if consumo.ProdutoID != produtoID {
@@ -39,7 +39,7 @@ func TestNewConsumoRegistrado(t *testing.T) {
 	t.Run("Quantidade não positiva", func(t *testing.T) {
 		quantidadeNegativa := -5
 
-		consumo, err = domain.NewConsumoRegistrado(ginásioID, produtoID, quantidadeNegativa)
+		consumo, err = domain.NewConsumoRegistrado(ginasioID, produtoID, quantidadeNegativa)
 	
 		if err == nil {
 			t.Error("Esperava-se um erro para quantidade não positiva")

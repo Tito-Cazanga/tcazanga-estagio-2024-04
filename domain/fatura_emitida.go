@@ -10,7 +10,7 @@ import (
 type Fatura struct {
 	ID           string
 	DataEmissao  time.Time
-	GinásioID    string
+	GinasioID    string
 	Total        float64
 	Consumos     []*ConsumoRegistrado
 }
@@ -29,7 +29,7 @@ func FaturaEmitida(ginásioID string, consumos []*ConsumoRegistrado) (*Fatura, e
 	return &Fatura{
 		ID:           generateID(),     
 		DataEmissao:  time.Now(),      
-		GinásioID:    ginásioID,
+		GinasioID:    ginásioID,
 		Total:        total,
 		Consumos:     consumos,
 	}, nil

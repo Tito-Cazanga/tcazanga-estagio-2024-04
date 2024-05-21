@@ -9,8 +9,8 @@ import (
 func TestEmitirFatura(t *testing.T) {
 
 	consumos := []*domain.ConsumoRegistrado{
-		{GinásioID: "ginásio1", ProdutoID: 1, Quantidade: 5},
-		{GinásioID: "ginásio1", ProdutoID: 2, Quantidade: 10},
+		{GinasioID: "ginásio1", ProdutoID: 1, Quantidade: 5},
+		{GinasioID: "ginásio1", ProdutoID: 2, Quantidade: 10},
 	}
 
 	fatura, err := domain.FaturaEmitida("ginásio1", consumos)
@@ -26,9 +26,9 @@ func TestEmitirFatura(t *testing.T) {
 							
 	t.Run("Emitir fatura consolidada", func(t *testing.T) {
 
-		esperadoGinásioID := "ginásio1"   		
-		if fatura.GinásioID != esperadoGinásioID {
-			t.Errorf("ID do ginásio esperado: %s, obtido: %s", esperadoGinásioID, fatura.GinásioID)
+		esperadoGinasioID := "ginásio1"   		
+		if fatura.GinasioID != esperadoGinasioID {
+			t.Errorf("ID do ginásio esperado: %s, obtido: %s", esperadoGinasioID, fatura.GinasioID)
 		}
 	
 		now := time.Now()

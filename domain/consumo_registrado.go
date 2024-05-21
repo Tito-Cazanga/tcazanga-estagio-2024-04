@@ -3,18 +3,18 @@ package domain
 import "errors"
 
 type ConsumoRegistrado struct {
-	GinásioID  string
+	GinasioID  string
 	ProdutoID  int
 	Quantidade int
 }
 
-func NewConsumoRegistrado(ginásioID string, produtoID, quantidade int) (*ConsumoRegistrado, error) {
+func NewConsumoRegistrado(ginasioID string, produtoID, quantidade int) (*ConsumoRegistrado, error) {
 	if quantidade <= 0 {
 		return nil, errors.New("a quantidade deve ser positiva")
 	}
 
 	return &ConsumoRegistrado{
-		GinásioID:  ginásioID,
+		GinasioID:  ginasioID,
 		ProdutoID:  produtoID,
 		Quantidade: quantidade,
 	}, nil
