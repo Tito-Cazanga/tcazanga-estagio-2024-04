@@ -8,14 +8,14 @@ import (
 )
 
 func TestEmitirFatura(t *testing.T) {
-	
+
 	t.Run("Teste emitir uma nova fatura", func(t *testing.T) {
 		// Arrange
 		consumos := []*domain.ConsumoRegistrado{
 			{GinasioID: "ginásio1", ProdutoID: 1, Quantidade: 5},
 			{GinasioID: "ginásio1", ProdutoID: 2, Quantidade: 10},
 		}
-	
+
 		comando := &application.EmitirFatura{
 			GinasioID: "ginásio1",
 			Consumos:  consumos,

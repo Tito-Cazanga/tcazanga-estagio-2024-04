@@ -43,14 +43,13 @@ func TestAbastecerExpositor_DoisAbastecimentos(t *testing.T) {
 	comando := &application.AbastecerExpositor{
 		ExpositorID: "2",
 		ProdutoID:   1,
-		Quantidade:  10,
-	}
+		Quantidade:  10}
 
 	// Act
 	comando.AbastecerExpositor(expositor)
 	evento2 := comando.AbastecerExpositor(expositor)
 
-	// Assert
+	// 	// Assert
 	if evento2.Quantidade != 10 {
 		t.Errorf("O segundo abasteciemto deveria adicionar 10 unidades")
 	}
