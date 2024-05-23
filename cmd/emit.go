@@ -45,8 +45,8 @@ func init() {
 	emitCmd.MarkFlagRequired("consumos")
 }
 
-func parseConsumos(consumosStr string) ([]*domain.ConsumoRegistrado, error) {
-	var consumos []*domain.ConsumoRegistrado
+func parseConsumos(consumosStr string) ([]*domain.ConsumirProduto, error) {
+	var consumos []*domain.ConsumirProduto
 	pares := strings.Split(consumosStr, ",")
 
 	for _, par := range pares {
@@ -65,7 +65,7 @@ func parseConsumos(consumosStr string) ([]*domain.ConsumoRegistrado, error) {
 			return nil, fmt.Errorf("quantidade inválida: %s", parts[1])
 		}
 
-		consumo := &domain.ConsumoRegistrado{
+		consumo := &domain.ConsumirProduto{
 			GinasioID: ginasioID,
 			ProdutoID: produtoID,
 			Quantidade: quantidade,

@@ -1,19 +1,19 @@
-package application_test
+package domain_test
 
 import (
-	"fitness/application"
+	"fitness/domain"
 	"testing"
 )
 
 func TestAbastecerExpositor(t *testing.T) {
 	//Arrange
-	expositor := &application.Expositor{
+	expositor := &domain.Expositor{
 		ID:          "1",
 		Localizacao: "Ginasio A",
 		Estoque:     make(map[int]int),
 	}
 
-	comando := application.AbastecerExpositor{
+	comando := domain.AbastecerExpositor{
 		ExpositorID: "1",
 		ProdutoID:   1,
 		Quantidade:  10,
@@ -34,13 +34,13 @@ func TestAbastecerExpositor(t *testing.T) {
 
 func TestAbastecerExpositor_DoisAbastecimentos(t *testing.T) {
 	// Arrange
-	expositor := &application.Expositor{
+	expositor := &domain.Expositor{
 		ID:          "2",
 		Localizacao: "Ginásio D",
 		Estoque:     make(map[int]int),
 	}
 
-	comando := &application.AbastecerExpositor{
+	comando := &domain.AbastecerExpositor{
 		ExpositorID: "2",
 		ProdutoID:   1,
 		Quantidade:  10}
@@ -61,13 +61,13 @@ func TestAbastecerExpositor_DoisAbastecimentos(t *testing.T) {
 
 func TestAbastecerExpositor_ProdutoDiferente(t *testing.T) {
 	//Arrange
-	expositor := &application.Expositor{
+	expositor := &domain.Expositor{
 		ID:          "12",
 		Localizacao: "Ginasio C",
 		Estoque:     make(map[int]int),
 	}
 
-	comando := &application.AbastecerExpositor{
+	comando := &domain.AbastecerExpositor{
 		ExpositorID: "12",
 		ProdutoID:   12,
 		Quantidade:  20,
@@ -88,13 +88,13 @@ func TestAbastecerExpositor_ProdutoDiferente(t *testing.T) {
 
 func TestAbastecerExpositor_ExpositorVazio(t *testing.T) {
 	// Arrange
-	expositor := &application.Expositor{
+	expositor := &domain.Expositor{
 		ID:          "45",
 		Localizacao: "Ginásio H",
 		Estoque:     make(map[int]int),
 	}
 
-	comando := &application.AbastecerExpositor{
+	comando := &domain.AbastecerExpositor{
 		ExpositorID: "45",
 		ProdutoID:   14,
 		Quantidade:  15,
