@@ -2,10 +2,11 @@ package application_test
 
 import (
 	"errors"
-	"fitness/application"
-	"fitness/domain"
 	"testing"
 	"time"
+
+	"fitness/application"
+	"fitness/domain"
 )
 
 func TestEmitirFatura1(t *testing.T) {
@@ -13,8 +14,8 @@ func TestEmitirFatura1(t *testing.T) {
 	t.Run("Teste emitir uma nova fatura", func(t *testing.T) {
 		// Arrange
 		consumos := []*domain.ConsumirProduto{
-			{GinasioID: "ginásio1", ProdutoID: 1, Quantidade: 5},
-			{GinasioID: "ginásio1", ProdutoID: 2, Quantidade: 10},
+			{ExpositorID: "ginásio1", ProdutoID: 1, Quantidade: 5},
+			{ExpositorID: "ginásio1", ProdutoID: 2, Quantidade: 10},
 		}
 
 		comando := &application.EmitirFatura{
@@ -59,8 +60,8 @@ func TestEmitirFatura1(t *testing.T) {
 func TestEmitirFatura(t *testing.T) {
 
 	consumos := []*domain.ConsumirProduto{
-		{GinasioID: "ginásio1", ProdutoID: 1, Quantidade: 5},
-		{GinasioID: "ginásio1", ProdutoID: 2, Quantidade: 10},
+		{ExpositorID: "ginásio1", ProdutoID: 1, Quantidade: 5},
+		{ExpositorID: "ginásio1", ProdutoID: 2, Quantidade: 10},
 	}
 
 	fatura, err := application.FaturaEmitida("ginásio1", consumos)
@@ -73,24 +74,23 @@ func TestEmitirFatura(t *testing.T) {
 		t.Error("A fatura gerada está nula")
 	}
 
-							
 	t.Run("Emitir fatura consolidada", func(t *testing.T) {
 
-		esperadoGinasioID := "ginásio1"   		
+		esperadoGinasioID := "ginásio1"
 		if fatura.GinasioID != esperadoGinasioID {
 			t.Errorf("ID do ginásio esperado: %s, obtido: %s", esperadoGinasioID, fatura.GinasioID)
 		}
-	
+
 		now := time.Now()
 		if !fatura.DataEmissao.After(now.Add(-time.Second)) || !fatura.DataEmissao.Before(now.Add(time.Second)) {
 			t.Errorf("Data de emissão da fatura não está dentro da margem de erro: %v", fatura.DataEmissao)
 		}
-	
-		esperadoTotal := 15.0 
+
+		esperadoTotal := 15.0
 		if fatura.Total != esperadoTotal {
 			t.Errorf("Total da fatura esperado: %f, obtido: %f", esperadoTotal, fatura.Total)
 		}
-	
+
 		esperadoNumConsumos := len(consumos)
 		if len(fatura.Consumos) != esperadoNumConsumos {
 			t.Errorf("Número de consumos na fatura esperado: %d, obtido: %d", esperadoNumConsumos, len(fatura.Consumos))
@@ -98,4 +98,3 @@ func TestEmitirFatura(t *testing.T) {
 
 	})
 }
-

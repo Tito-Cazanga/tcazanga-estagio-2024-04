@@ -1,13 +1,14 @@
 package cmd
 
 import (
-	"fitness/application"
-	"fitness/domain"
 	"fmt"
 	"strconv"
 	"strings"
 
 	"github.com/spf13/cobra"
+
+	"fitness/application"
+	"fitness/domain"
 )
 
 var ginasioID string
@@ -66,9 +67,9 @@ func parseConsumos(consumosStr string) ([]*domain.ConsumirProduto, error) {
 		}
 
 		consumo := &domain.ConsumirProduto{
-			GinasioID: ginasioID,
-			ProdutoID: produtoID,
-			Quantidade: quantidade,
+			ExpositorID: ginasioID,
+			ProdutoID:   produtoID,
+			Quantidade:  quantidade,
 		}
 		consumos = append(consumos, consumo)
 	}
