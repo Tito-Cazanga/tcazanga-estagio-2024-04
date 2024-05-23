@@ -2,13 +2,13 @@ package cmd
 
 import (
 	"os"
-
 	"github.com/spf13/cobra"
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "fitness-cli",
-	Short: "CLI para gestão de faturas de um ginásio",
+	Use:   "minha-cli",
+	Short: "CLI para gerenciamento de remessas",
+	Long:  `Uma CLI para criar e registrar guias de remessa entre expositores.`,
 }
 
 func Execute() {
@@ -18,5 +18,5 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.AddCommand(emitCmd)
+	// Podemos adicionar flags globais aqui
 }
