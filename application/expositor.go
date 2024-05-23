@@ -13,16 +13,17 @@ type AbastecerExpositor struct {
 	Quantidade  int
 }
 
-func (comando *AbastecerExpositor) AbastecerExpositor(expositor *Expositor) *domain.ExpositorAbastecido {
+func (cmd *AbastecerExpositor) AbastecerExpositor(expositor *Expositor) *domain.ExpositorAbastecido {
 	if expositor.Estoque == nil {
 		expositor.Estoque = make(map[int]int)
 	}
 
-	expositor.Estoque[comando.ProdutoID] += comando.Quantidade
+	expositor.Estoque[cmd.ProdutoID] += cmd.Quantidade
 
 	return &domain.ExpositorAbastecido{
-		ExpositorID: comando.ExpositorID,
-		ProdutoID:   comando.ProdutoID,
-		Quantidade:  comando.Quantidade,
+		ExpositorID: cmd.ExpositorID,
+		ProdutoID:   cmd.ProdutoID,
+		Quantidade:  cmd.Quantidade,
 	}
 }
+
