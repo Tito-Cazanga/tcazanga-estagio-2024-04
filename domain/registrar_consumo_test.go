@@ -33,6 +33,7 @@ func TestConsumoRegistrado_AposExpositorAbastecido(t *testing.T) {
 	if evento.Quantidade != 5 {
 		t.Errorf("A quantidade no evento está incorreta")
 	}
+	
 }
 
 
