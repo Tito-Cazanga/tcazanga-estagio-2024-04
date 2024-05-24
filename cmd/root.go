@@ -6,7 +6,7 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "CLI da Fitness",
+	Use:   "fitness-cli",
 	Short: "CLI para gestão de actividades na empresa Fitness",
 	Long:  `CLI para gestão de todas actividades na empresa Fitness apartir da linha de comando.`,
 }

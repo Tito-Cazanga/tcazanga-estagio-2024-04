@@ -13,63 +13,61 @@ Este é um CLI para gerenciamento de operações em um ambiente fitness. Ele ofe
 ## Instalação
 
 Certifique-se de ter o Go instalado em sua máquina. Para instalar este CLI, execute:
-
-```   
-go get -u github.com/seu-usuario/fitness-cli
+  
 
 
 ## Uso
 
 *abastecer-expositor*
 Abastece um expositor com um determinado produto.
-fitness-cli abastecer-expositor [expositorID] [produtoID] [quantidade]
+go run main.go abastecer-expositor --expositorID[expositorID] --produtoID[produtoID] --quantidade[quantidade]
 
 *Exemplo*
-fitness-cli abastecer-expositor expositor1 101 20  
+go run main.go abastecer-expositor expositor1 101 20  
 
 
 *consumir-produto*
 Consome um produto de um expositor.
-fitness-cli consumir-produto [expositorID] [produtoID] [quantidade]
+go run main.go consumir-produto expositorID[expositorID] produtoID[produtoID] quantidade[quantidade]
 
 *Exemplo:*
-fitness-cli consumir-produto expositor1 102 5
+go run main.go consumir-produto expositor1 102 5
 
 
 *emitir-fatura*
 Emite uma fatura para um ginásio com base nos consumos de produtos. 
-fitness-cli emitir-fatura [ginasioID] [consumos]
+go run main.go emitir-fatura ginasioID[ginasioID] consumos[consumos]
 
 *Exemplo:* 
-fitness-cli emitir-fatura ginasio1 expositor1:101:10,expositor2:102:5
+go run main.go emitir-fatura ginasio1 expositor1:101:10,expositor2:102:5
 
 
 *instalar-expositor*
 Instala um novo expositor com produtos iniciais.
-fitness-cli instalar-expositor [expositorID] [localizacao] [produtos]
+go run main.go instalar-expositor expositorID[expositorID] a[localizacao] produtos[produtos]
 
 *Exemplo:*
-fitness-cli instalar-expositor expositor2 "Localização 2" "101:50,102:30"
+go run main.go instalar-expositor expositor2 "Localização 2" "101:50,102:30"
 
 
 *novo-guia-remessa*
 Cria um novo Guia de Remessa.
-fitness-cli novo-guia-remessa [origemID] [destinoID] [produtoID] [quantidade]
+go run main.go novo-guia-remessa origemID[origemID] destinoID[destinoID] produtoID[produtoID] quantidade[quantidade]
 
 *Exemplo:*
-fitness-cli novo-guia-remessa origem1 destino1 101 20
+go run main.go novo-guia-remessa origem1 destino1 101 20
 
 
 *registrar-remessa*
 Registra uma remessa entre dois expositores. 
-fitness-cli registrar-remessa [origemID] [destinoID] [produtoID] [quantidade]
+go run main.go registrar-remessa origemID[origemID] destinoID[destinoID] produtoID[produtoID] quantidade[quantidade]
 
 *Exemplo:*
-fitness-cli registrar-remessa origem1 destino1 101 20
+go run main.go registrar-remessa origem1 destino1 101 20
 
 
 Para obter mais detalhes sobre cada comando e suas opções, use a flag --help após o comando. Por exemplo:
-fitness-cli abastecer-expositor --help
+go run main.go abastecer-expositor --help
 Isso exibirá informações detalhadas sobre como usar o comando abastecer-expositor.
 
 _Divirta-se usando o Fitness CLI!_
