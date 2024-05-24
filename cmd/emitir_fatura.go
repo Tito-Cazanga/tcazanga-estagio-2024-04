@@ -1,25 +1,27 @@
 package cmd
 
 import (
-	"fmt"
-	"strconv"
-	"strings"
-
-	"github.com/spf13/cobra"
 	"fitness/application"
 	"fitness/domain"
+	"fmt"
+	"strings"
+	"strconv"
+
+	"github.com/spf13/cobra"
 )
 
+var ginasioID string
+var consumosFlag string
+
 var emitirFaturaCmd = &cobra.Command{
-	Use:   "emitir-fatura [ginasioID] [consumos]",
+	Use:   "emitir-fatura",
 	Short: "Emite uma fatura para um ginásio com base nos consumos de produtos",
 	Long:  `Emite uma fatura para um ginásio especificado com base nos consumos de produtos fornecidos.`,
-	Args:  cobra.ExactArgs(2),
+	Args:  cobra.NoArgs, 
 	Run: func(cmd *cobra.Command, args []string) {
-		ginasioID := args[0]
 		consumos := []*domain.ConsumirProduto{}
 
-		for _, consumoStr := range strings.Split(args[1], ",") {
+		for _, consumoStr := range strings.Split(consumosFlag, ",") {
 			parts := strings.Split(consumoStr, ":")
 			if len(parts) != 3 {
 				fmt.Println("Formato de consumo inválido. Use: expositorID:produtoID:quantidade")
@@ -54,10 +56,25 @@ var emitirFaturaCmd = &cobra.Command{
 			fmt.Println("Erro ao emitir fatura:", err)
 			return
 		}
-		fmt.Printf("Fatura emitida: %+v\n", fatura)
+		fmt.Printf("Fatura emitida:\n")
+		fmt.Printf("ID: %s\n", fatura.ID)
+		fmt.Printf("Data de Emissão: %s\n", fatura.DataEmissao.Format("2006-01-02 15:04:05"))
+		fmt.Printf("GinasioID: %s\n", fatura.GinasioID)
+		fmt.Printf("Total: %.2f\n", fatura.Total)
+		for _, consumo := range fatura.Consumos {
+			fmt.Printf("Consumo - ExpositorID: %s, ProdutoID: %d, Quantidade: %d\n", consumo.ExpositorID, consumo.ProdutoID, consumo.Quantidade)
+		}
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(emitirFaturaCmd)
+
+	// Definindo flags para o comando
+	emitirFaturaCmd.Flags().StringVarP(&ginasioID, "ginasioID", "g", "", "ID do ginásio")
+	emitirFaturaCmd.Flags().StringVarP(&consumosFlag, "consumos", "c", "", "Lista de consumos no formato expositorID:produtoID:quantidade separados por vírgula")
+
+	// Marcando flags como obrigatórias
+	emitirFaturaCmd.MarkFlagRequired("ginasioID")
+	emitirFaturaCmd.MarkFlagRequired("consumos")
 }
