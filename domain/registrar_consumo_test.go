@@ -39,6 +39,7 @@ func TestConsumoRegistrado_AposExpositorAbastecido(t *testing.T) {
 	if expositor.Estoque[1] != 5 {
 		t.Errorf("O estoque do expositor está incorreto após o consumo. Esperado: '5', Obtido: '%d'", expositor.Estoque[1])
 	}
+	
 }
 
 func TestNewConsumirProduto(t *testing.T) {
