@@ -33,7 +33,6 @@ func NewConsumirProduto(expositorID string, produtoID, quantidade int) (*Consumi
 
 // RegistrarConsumo executa o comando de consumir produto no expositor e retorna o evento gerado.
 func (cmd *ConsumirProduto) RegistrarConsumo(expositor *Expositor) (*ConsumoRealizado, error) {
-	// Verificar se o expositor possui o produto em estoque
 	quantidadeEstoque, existe := expositor.Estoque[cmd.ProdutoID]
 	if !existe {
 		return nil, errors.New("produto não encontrado no estoque")
@@ -43,11 +42,15 @@ func (cmd *ConsumirProduto) RegistrarConsumo(expositor *Expositor) (*ConsumoReal
 		return nil, errors.New("estoque insuficiente para o produto")
 	}
 
+	// Deduzir a quantidade consumida do estoque
 	expositor.Estoque[cmd.ProdutoID] -= cmd.Quantidade
 
-	return &ConsumoRealizado{
+	// Gerar evento de consumo
+	evento := &ConsumoRealizado{
 		ExpositorID: expositor.ID,
 		ProdutoID:   cmd.ProdutoID,
 		Quantidade:  cmd.Quantidade,
-	}, nil
+	}
+
+	return evento, nil
 }

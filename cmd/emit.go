@@ -51,28 +51,34 @@ func parseConsumos(consumosStr string) ([]*domain.ConsumirProduto, error) {
 	pares := strings.Split(consumosStr, ",")
 
 	for _, par := range pares {
-		parts := strings.Split(par, ":")
-		if len(parts) != 2 {
-			return nil, fmt.Errorf("formato inválido para consumo: %s", par)
-		}
-
-		produtoID, err := strconv.Atoi(parts[0])
+		consumo, err := parsePar(par)
 		if err != nil {
-			return nil, fmt.Errorf("produtoID inválido: %s", parts[0])
-		}
-
-		quantidade, err := strconv.Atoi(parts[1])
-		if err != nil {
-			return nil, fmt.Errorf("quantidade inválida: %s", parts[1])
-		}
-
-		consumo := &domain.ConsumirProduto{
-			ExpositorID: ginasioID,
-			ProdutoID:   produtoID,
-			Quantidade:  quantidade,
+			return nil, err
 		}
 		consumos = append(consumos, consumo)
 	}
 
 	return consumos, nil
+}
+
+func parsePar(par string) (*domain.ConsumirProduto, error) {
+	parts := strings.Split(par, ":")
+	if len(parts) != 2 {
+		return nil, fmt.Errorf("formato inválido para consumo: %s", par)
+	}
+
+	produtoID, err := strconv.Atoi(parts[0])
+	if err != nil {
+		return nil, fmt.Errorf("produtoID inválido: %s", parts[0])
+	}
+
+	quantidade, err := strconv.Atoi(parts[1])
+	if err != nil {
+		return nil, fmt.Errorf("quantidade inválida: %s", parts[1])
+	}
+
+	return &domain.ConsumirProduto{
+		ProdutoID:  produtoID,
+		Quantidade: quantidade,
+	}, nil
 }

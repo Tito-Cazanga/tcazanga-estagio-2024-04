@@ -33,28 +33,28 @@ func NovoGuiaRemessa(origemID, destinoID string, produtoID, quantidade int) (*Gu
 
 // Registrar Remessa
 func (cmd *GuiaRemessa) RegistrarRemessa(origem, destino *Expositor) (*RemessaRegistrada, error) {
-	quantidadeEstoque, existe := origem.Estoque[cmd.ProdutoID]
+	quantidadeEstoqueOrigem, existe := origem.Estoque[cmd.ProdutoID]
 	if !existe {
 		return nil, errors.New("produto não encontrado no estoque da origem")
 	}
 
-	if quantidadeEstoque < cmd.Quantidade {
+	if quantidadeEstoqueOrigem < cmd.Quantidade {
 		return nil, errors.New("estoque insuficiente na origem")
 	}
 
-	// Deduzir do estoque da origem
+	// Atualizar estoque da origem
 	origem.Estoque[cmd.ProdutoID] -= cmd.Quantidade
 
-	// Adicionar ao estoque do destino
-	if destino.Estoque == nil {
-		destino.Estoque = make(map[int]int)
-	}
+	// Atualizar estoque do destino
 	destino.Estoque[cmd.ProdutoID] += cmd.Quantidade
 
-	return &RemessaRegistrada{
-		OrigemID:   cmd.OrigemID,
-		DestinoID:  cmd.DestinoID,
+	// Gerar evento de remessa
+	evento := &RemessaRegistrada{
+		OrigemID:   origem.ID,
+		DestinoID:  destino.ID,
 		ProdutoID:  cmd.ProdutoID,
 		Quantidade: cmd.Quantidade,
-	}, nil
+	}
+
+	return evento, nil
 }
