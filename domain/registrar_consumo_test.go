@@ -12,57 +12,60 @@ func TestConsumoRegistrado_AposExpositorAbastecido(t *testing.T) {
 		Localizacao: "Ginásio A",
 		Estoque:     map[int]int{1: 10},
 	}
-	comando := &domain.ConsumirProduto{
-		GinasioID: "1",
-		ProdutoID:   1,
-		Quantidade:  5,
+	comando, err := domain.NewConsumirProduto("1", 1, 5)
+	if err != nil {
+		t.Fatalf("Erro ao criar comando ConsumirProduto: %v", err)
 	}
 
 	// Act
-	evento := comando.RegistrarConsumo(expositor)
+	evento, err := comando.RegistrarConsumo(expositor)
+	if err != nil {
+		t.Fatalf("Erro ao registrar consumo: %v", err)
+	}
 
 	// Assert
-	if evento.GinasioID != "1" {
-		t.Errorf("O ID do ginásio no evento está incorreto")
+	if evento.ExpositorID != "1" {
+		t.Errorf("O ID do expositor no evento está incorreto. Esperado: '1', Obtido: '%s'", evento.ExpositorID)
 	}
 
 	if evento.ProdutoID != 1 {
-		t.Errorf("O ID do produto no evento está incorreto")
+		t.Errorf("O ID do produto no evento está incorreto. Esperado: '1', Obtido: '%d'", evento.ProdutoID)
 	}
 
 	if evento.Quantidade != 5 {
-		t.Errorf("A quantidade no evento está incorreta")
+		t.Errorf("A quantidade no evento está incorreta. Esperado: '5', Obtido: '%d'", evento.Quantidade)
+	}
+
+	if expositor.Estoque[1] != 5 {
+		t.Errorf("O estoque do expositor está incorreto após o consumo. Esperado: '5', Obtido: '%d'", expositor.Estoque[1])
 	}
 	
 }
 
-
-func TestNewConsumoRegistrado(t *testing.T) {
-	
+func TestNewConsumirProduto(t *testing.T) {
 	ginasioID := "ginásio1"
 	produtoID := 1
 	quantidade := 10
 
-	consumo, err :=  domain.NewConsumirProduto(ginasioID, produtoID, quantidade)
-
 	t.Run("Quantidade positiva", func(t *testing.T) {
-		
+		consumo, err := domain.NewConsumirProduto(ginasioID, produtoID, quantidade)
+
 		if err != nil {
 			t.Errorf("Erro inesperado: %v", err)
 		}
-	
+
 		if consumo == nil {
-			t.Error("O objeto ConsumoRegistrado não deveria ser nulo")
+			t.Error("O objeto ConsumirProduto não deveria ser nulo")
 		}
-	
-		if consumo.GinasioID != ginasioID {
-			t.Errorf("GinásioID esperado: %s, obtido: %s", ginasioID, consumo.GinasioID)
+
+		if consumo.ExpositorID != ginasioID {
+			t.Errorf("GinásioID esperado: %s, obtido: %s", ginasioID, consumo.ExpositorID)
 		}
-	
+
 		if consumo.ProdutoID != produtoID {
 			t.Errorf("ProdutoID esperado: %d, obtido: %d", produtoID, consumo.ProdutoID)
 		}
-	
+
 		if consumo.Quantidade != quantidade {
 			t.Errorf("Quantidade esperada: %d, obtida: %d", quantidade, consumo.Quantidade)
 		}
@@ -71,16 +74,14 @@ func TestNewConsumoRegistrado(t *testing.T) {
 	t.Run("Quantidade não positiva", func(t *testing.T) {
 		quantidadeNegativa := -5
 
-		consumo, err = domain.NewConsumirProduto(ginasioID, produtoID, quantidadeNegativa)
-	
+		consumo, err := domain.NewConsumirProduto(ginasioID, produtoID, quantidadeNegativa)
+
 		if err == nil {
 			t.Error("Esperava-se um erro para quantidade não positiva")
 		}
-	
-		if consumo != nil {
-			t.Error("O objeto ConsumoRegistrado deveria ser nulo")
-		}
 
+		if consumo != nil {
+			t.Error("O objeto ConsumirProduto deveria ser nulo")
+		}
 	})
-	
 }

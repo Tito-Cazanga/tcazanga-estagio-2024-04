@@ -1,34 +1,36 @@
 package domain_test
 
 import (
-	"fitness/domain"
 	"testing"
+	"time"
+
+	"fitness/domain"
 )
 
 func TestAbastecerExpositor(t *testing.T) {
-	//Arrange
+	// Arrange
 	expositor := &domain.Expositor{
 		ID:          "1",
 		Localizacao: "Ginasio A",
 		Estoque:     make(map[int]int),
 	}
 
-	comando := domain.AbastecerExpositor{
+	comando := &domain.AbastecerExpositor{
 		ExpositorID: "1",
 		ProdutoID:   1,
 		Quantidade:  10,
 	}
 
-	//Act
-	evento := comando.AbastecerExpositor(expositor)
+	// Act
+	evento := comando.Abastecer(expositor)
 
-	//Assert
+	// Assert
 	if evento.ExpositorID != "1" || evento.ProdutoID != 1 || evento.Quantidade != 10 {
-		t.Error("O expositor não foi abastecido")
+		t.Error("O evento retornado pelo comando está incorreto")
 	}
 
 	if expositor.Estoque[1] != 10 {
-		t.Error("O estoque do expositor está incorrecto após o abastecimento")
+		t.Error("O estoque do expositor está incorreto após o abastecimento")
 	}
 }
 
@@ -43,15 +45,16 @@ func TestAbastecerExpositor_DoisAbastecimentos(t *testing.T) {
 	comando := &domain.AbastecerExpositor{
 		ExpositorID: "2",
 		ProdutoID:   1,
-		Quantidade:  10}
+		Quantidade:  10,
+	}
 
 	// Act
-	comando.AbastecerExpositor(expositor)
-	evento2 := comando.AbastecerExpositor(expositor)
+	comando.Abastecer(expositor)
+	evento2 := comando.Abastecer(expositor)
 
-	// 	// Assert
+	// Assert
 	if evento2.Quantidade != 10 {
-		t.Errorf("O segundo abasteciemto deveria adicionar 10 unidades")
+		t.Errorf("O segundo abastecimento deveria adicionar 10 unidades")
 	}
 
 	if expositor.Estoque[1] != 20 {
@@ -60,7 +63,7 @@ func TestAbastecerExpositor_DoisAbastecimentos(t *testing.T) {
 }
 
 func TestAbastecerExpositor_ProdutoDiferente(t *testing.T) {
-	//Arrange
+	// Arrange
 	expositor := &domain.Expositor{
 		ID:          "12",
 		Localizacao: "Ginasio C",
@@ -73,16 +76,16 @@ func TestAbastecerExpositor_ProdutoDiferente(t *testing.T) {
 		Quantidade:  20,
 	}
 
-	//Act
-	evento := comando.AbastecerExpositor(expositor)
+	// Act
+	evento := comando.Abastecer(expositor)
 
-	//Assert
+	// Assert
 	if evento.ProdutoID != 12 {
-		t.Error("ID do produto errado")
+		t.Error("ID do produto errado no evento")
 	}
 
 	if expositor.Estoque[12] != 20 {
-		t.Error("O estoque do expositor deveria ser 20 para produto 12")
+		t.Error("O estoque do expositor deveria ser 20 para o produto 12")
 	}
 }
 
@@ -101,7 +104,7 @@ func TestAbastecerExpositor_ExpositorVazio(t *testing.T) {
 	}
 
 	// Act
-	evento := comando.AbastecerExpositor(expositor)
+	evento := comando.Abastecer(expositor)
 
 	// Assert
 	if evento.ExpositorID != "45" {
@@ -109,6 +112,49 @@ func TestAbastecerExpositor_ExpositorVazio(t *testing.T) {
 	}
 
 	if expositor.Estoque[14] != 15 {
-		t.Errorf("O estoque do expositor deveria ser 15 para 0 produto %v", evento.ProdutoID)
+		t.Errorf("O estoque do expositor deveria ser 15 para o produto %v", evento.ProdutoID)
+	}
+}
+
+func TestAbastecerExpositor_DoisAbastecimentosPorSemana(t *testing.T) {
+	// Arrange
+	expositor := &domain.Expositor{
+		ID:             "2",
+		Localizacao:    "Ginásio D",
+		Estoque:        make(map[int]int),
+		Abastecimentos: []time.Time{},
+	}
+
+	comando := &domain.AbastecerExpositor{
+		ExpositorID: "2",
+		ProdutoID:   1,
+		Quantidade:  10,
+	}
+
+	// Act - Primeiro Abastecimento
+	_, err := comando.AbastecerExpositor(expositor)
+	if err != nil {
+		t.Fatalf("Erro ao abastecer pela primeira vez: %v", err)
+	}
+
+	// Act - Segundo Abastecimento
+	_, err = comando.AbastecerExpositor(expositor)
+	if err != nil {
+		t.Fatalf("Erro ao abastecer pela segunda vez: %v", err)
+	}
+
+	// Act - Terceiro Abastecimento (deve falhar)
+	_, err = comando.AbastecerExpositor(expositor)
+	if err == nil {
+		t.Fatal("Esperava-se erro para terceiro abastecimento na mesma semana, mas não ocorreu")
+	}
+
+	// Assert
+	if expositor.Estoque[1] != 20 {
+		t.Errorf("O estoque do expositor deveria ser 20 após dois abastecimentos. Obtido: %d", expositor.Estoque[1])
+	}
+
+	if len(expositor.Abastecimentos) != 2 {
+		t.Errorf("O número de abastecimentos registrados deveria ser 2. Obtido: %d", len(expositor.Abastecimentos))
 	}
 }
