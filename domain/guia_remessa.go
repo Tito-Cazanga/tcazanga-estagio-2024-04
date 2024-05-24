@@ -1,6 +1,9 @@
 package domain
 
-import "errors"
+import (
+	"errors"
+	"time"
+)
 
 type GuiaRemessa struct {
 	OrigemID   string
@@ -9,12 +12,6 @@ type GuiaRemessa struct {
 	Quantidade int
 }
 
-type RemessaRegistrada struct {
-	OrigemID   string
-	DestinoID  string
-	ProdutoID  int
-	Quantidade int
-}
 
 func NovoGuiaRemessa(origemID, destinoID string, produtoID, quantidade int) (*GuiaRemessa, error) {
 	if quantidade <= 0 {
@@ -28,26 +25,58 @@ func NovoGuiaRemessa(origemID, destinoID string, produtoID, quantidade int) (*Gu
 	}, nil
 }
 
-func (cmd *GuiaRemessa) RegistrarRemessa(origem, destino *Expositor) (*RemessaRegistrada, error) {
-	quantidadeEstoqueOrigem, existe := origem.Estoque[cmd.ProdutoID]
-	if !existe {
-		return nil, errors.New("produto não encontrado no estoque da origem")
-	}
+type RemessaCriada struct {
+	OrigemID   string
+	DestinoID  string
+	ProdutoID  int
+	Quantidade int
+	Data       time.Time
+}
+
+var ErrLimiteAbastecimentosAtingido = errors.New("limite de abastecimentos semanais atingido")
+
+func (cmd *GuiaRemessa) CriarRemessa(origem, destino *Expositor) (*RemessaCriada, error) {
+
+	quantidadeEstoqueOrigem := origem.Estoque[cmd.ProdutoID]
 
 	if quantidadeEstoqueOrigem < cmd.Quantidade {
 		return nil, errors.New("estoque insuficiente na origem")
 	}
 
-	origem.Estoque[cmd.ProdutoID] -= cmd.Quantidade
+	if origem.ID == destino.ID {
+		return nil, errors.New("a origem e o destino não podem ser o mesmo expositor")
+	}
 
-	destino.Estoque[cmd.ProdutoID] += cmd.Quantidade
+	if err := verificarLimiteAbastecimentos(destino); err != nil {
+		return nil, err
+	}
 
-	evento := &RemessaRegistrada{
+
+	remessa := &RemessaCriada{
 		OrigemID:   origem.ID,
 		DestinoID:  destino.ID,
 		ProdutoID:  cmd.ProdutoID,
 		Quantidade: cmd.Quantidade,
+		Data:       time.Now(),
 	}
 
-	return evento, nil
+	return remessa, nil
+}
+
+func verificarLimiteAbastecimentos(expositor *Expositor) error {
+	semanaAtual := time.Now().AddDate(0, 0, -int(time.Now().Weekday()))
+
+	var abastecimentosRecentes []time.Time
+	for _, data := range expositor.Abastecimentos {
+		if data.After(semanaAtual) {
+			abastecimentosRecentes = append(abastecimentosRecentes, data)
+		}
+	}
+
+	if len(abastecimentosRecentes) >= 2 {
+		return ErrLimiteAbastecimentosAtingido
+	}
+
+	expositor.Abastecimentos = append(abastecimentosRecentes, time.Now())
+	return nil
 }

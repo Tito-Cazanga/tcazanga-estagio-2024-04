@@ -11,12 +11,12 @@ func TestRegistrarRemessa(t *testing.T) {
 	origem := &domain.Expositor{
 		ID:          "CentroDistribuicao",
 		Localizacao: "Central",
-		Estoque:     map[int]int{1: 100},
+		Estoque:     map[int]int{1: 50},
 	}
 	destino := &domain.Expositor{
 		ID:          "GinásioA",
 		Localizacao: "Bairro A",
-		Estoque:     map[int]int{},
+		Estoque:     map[int]int{1: 50},
 	}
 
 	comando, err := domain.NovoGuiaRemessa("CentroDistribuicao", "GinásioA", 1, 50)
@@ -25,7 +25,7 @@ func TestRegistrarRemessa(t *testing.T) {
 	}
 
 	// Act
-	evento, err := comando.RegistrarRemessa(origem, destino)
+	evento, err := comando.CriarRemessa(origem, destino)
 	if err != nil {
 		t.Fatalf("Erro ao registrar remessa: %v", err)
 	}
@@ -75,7 +75,7 @@ func TestRegistrarRemessa_EstoqueInsuficiente(t *testing.T) {
 	}
 
 	// Act
-	evento, err := comando.RegistrarRemessa(origem, destino)
+	evento, err := comando.CriarRemessa(origem, destino)
 
 	// Assert
 	if err == nil {

@@ -35,7 +35,7 @@ var registrarRemessaCmd = &cobra.Command{
 			Estoque: map[int]int{},
 		}
 
-		remessa, err := guia.RegistrarRemessa(origem, destino)
+		remessa, err := guia.CriarRemessa(origem, destino)
 		if err != nil {
 			fmt.Println("Erro ao registrar remessa:", err)
 			return
