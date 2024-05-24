@@ -29,9 +29,9 @@ var abastecerExpositorCmd = &cobra.Command{
 		expositor := &domain.Expositor{
 			ID: args[0],
 			Estoque: map[int]int{
-				produtoID: 50, // Exemplo de estoque inicial
+				produtoID: 50, 
 			},
-			Abastecimentos: []time.Time{}, // Exemplo de abastecimentos iniciais
+			Abastecimentos: []time.Time{}, 
 		}
 
 		abastecerCmd := &domain.AbastecerExpositor{

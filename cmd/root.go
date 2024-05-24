@@ -6,9 +6,9 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "minha-cli",
-	Short: "CLI para gerenciamento de remessas",
-	Long:  `Uma CLI para criar e registrar guias de remessa entre expositores.`,
+	Use:   "CLI da Fitness",
+	Short: "CLI para gestão de actividades na empresa Fitness",
+	Long:  `CLI para gestão de todas actividades na empresa Fitness apartir da linha de comando.`,
 }
 
 func Execute() {
@@ -17,6 +17,3 @@ func Execute() {
 	}
 }
 
-func init() {
-	// Podemos adicionar flags globais aqui
-}

@@ -34,7 +34,7 @@ var registrarRemessaCmd = &cobra.Command{
 		origem := &domain.Expositor{
 			ID: args[0],
 			Estoque: map[int]int{
-				produtoID: 100, // Exemplo de estoque inicial
+				produtoID: 100,
 			},
 		}
 		destino := &domain.Expositor{

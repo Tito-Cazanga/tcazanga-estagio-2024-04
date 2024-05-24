@@ -16,8 +16,7 @@ var instalarExpositorCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(3),
 	Run: func(cmd *cobra.Command, args []string) {
 		produtos := make(map[int]int)
-		// Parse produtos from the argument
-		// Assumes format: produtoID1:quantidade1,produtoID2:quantidade2,...
+		
 		for _, produto := range strings.Split(args[2], ",") {
 			parts := strings.Split(produto, ":")
 			produtoID, err := strconv.Atoi(parts[0])

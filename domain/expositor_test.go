@@ -131,19 +131,19 @@ func TestAbastecerExpositor_DoisAbastecimentosPorSemana(t *testing.T) {
 		Quantidade:  10,
 	}
 
-	// Act - Primeiro Abastecimento
+	// Act 
 	_, err := comando.AbastecerExpositor(expositor)
 	if err != nil {
 		t.Fatalf("Erro ao abastecer pela primeira vez: %v", err)
 	}
 
-	// Act - Segundo Abastecimento
+	// Act 
 	_, err = comando.AbastecerExpositor(expositor)
 	if err != nil {
 		t.Fatalf("Erro ao abastecer pela segunda vez: %v", err)
 	}
 
-	// Act - Terceiro Abastecimento (deve falhar)
+	// Act
 	_, err = comando.AbastecerExpositor(expositor)
 	if err == nil {
 		t.Fatal("Esperava-se erro para terceiro abastecimento na mesma semana, mas não ocorreu")

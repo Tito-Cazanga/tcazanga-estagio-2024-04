@@ -24,15 +24,13 @@ type Fatura struct {
 var ErrListaConsumosVazia = errors.New("a lista de consumos está vazia")
 
 func (comando *EmitirFatura) NewFatura() (*Fatura, error) {
-	// Verificar se há consumos
+	
 	if len(comando.Consumos) == 0 {
 		return nil, ErrListaConsumosVazia
 	}
 
-	// Gerar a fatura usando a função da camada de domínio
 	return FaturaEmitida(comando.GinasioID, comando.Consumos)
 }
-
 
 func FaturaEmitida(ginásioID string, consumos []*domain.ConsumirProduto) (*Fatura, error) {
 	if len(consumos) == 0 {
@@ -55,6 +53,5 @@ func FaturaEmitida(ginásioID string, consumos []*domain.ConsumirProduto) (*Fatu
 }
 
 func generateID() string {
-	// Implementação fictícia para gerar um ID único
 	return fmt.Sprintf("%d", time.Now().UnixNano())
 }
