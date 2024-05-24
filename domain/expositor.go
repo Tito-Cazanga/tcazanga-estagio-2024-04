@@ -96,10 +96,6 @@ func numAbastecimentosEstaSemana(abastecimentos []time.Time) int {
 }
 
 
-
-
-
-
 // NovoExpositorInstalado cria um novo comando de instalação de expositor e retorna o evento gerado.
 func NovoExpositorInstalado(expositorID, localizacao string, produtos map[int]int) *ExpositorInstalado {
 	return &ExpositorInstalado{
