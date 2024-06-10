@@ -70,11 +70,9 @@ var emitirFaturaCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(emitirFaturaCmd)
 
-	// Definindo flags para o comando
 	emitirFaturaCmd.Flags().StringVarP(&ginasioID, "ginasioID", "g", "", "ID do ginásio")
 	emitirFaturaCmd.Flags().StringVarP(&consumosFlag, "consumos", "c", "", "Lista de consumos no formato expositorID:produtoID:quantidade separados por vírgula")
-
-	// Marcando flags como obrigatórias
+	
 	emitirFaturaCmd.MarkFlagRequired("ginasioID")
 	emitirFaturaCmd.MarkFlagRequired("consumos")
 }
