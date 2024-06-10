@@ -1,14 +1,14 @@
-package application_test
+package domain_test
 
 import (
-	"fitness/application"
+	"fitness/domain"
 	"testing"
 	"time"
 )
 
 func TestVenderProduto_ProdutoNaoDisponivel(t *testing.T) {
 	// Arrange: Definindo uma lista de produtos sem o produto a ser vendido
-	produtos := []application.Produto{
+	produtos := []domain.Produto {
 		{Nome: "Produto A", Validade: time.Now().Add(6 * 24 * time.Hour), Quantidade: 10},
 		{Nome: "Produto B", Validade: time.Now().Add(10 * 24 * time.Hour), Quantidade: 5},
 	}
@@ -16,7 +16,7 @@ func TestVenderProduto_ProdutoNaoDisponivel(t *testing.T) {
 	// Act: Tentando vender um produto que não está disponível
 	produtoVendido := "Produto C"
 	quantidadeVendida := 3
-	application.VenderProduto(&produtos, produtoVendido, quantidadeVendida)
+	domain.VenderProduto(&produtos, produtoVendido, quantidadeVendida)
 
 	// Assert: Verificando se a quantidade disponível dos produtos permanece inalterada
 	for _, p := range produtos {
@@ -30,7 +30,7 @@ func TestVenderProduto_ProdutoNaoDisponivel(t *testing.T) {
 
 func TestVenderProduto_ValidadesDiferentes(t *testing.T) {
 	// Arrange: Definindo uma lista de produtos com o mesmo nome, mas com validades diferentes
-	produtos := []application.Produto{
+	produtos := []domain.Produto{
 		{Nome: "Produto A", Validade: time.Now().Add(6 * 24 * time.Hour), Quantidade: 10},
 		{Nome: "Produto A", Validade: time.Now().Add(10 * 24 * time.Hour), Quantidade: 5},
 	}
@@ -38,7 +38,7 @@ func TestVenderProduto_ValidadesDiferentes(t *testing.T) {
 	// Act: Vendendo o produto e verificando a quantidade disponível
 	produtoVendido := "Produto A"
 	quantidadeVendida := 3
-	application.VenderProduto(&produtos, produtoVendido, quantidadeVendida)
+	domain.VenderProduto(&produtos, produtoVendido, quantidadeVendida)
 
 	// Assert: Verificando se a quantidade disponível do produto com a validade mais antiga foi reduzida corretamente
 	quantidadeEsperada := 7
@@ -53,14 +53,14 @@ func TestVenderProduto_ValidadesDiferentes(t *testing.T) {
 
 func TestVenderProduto_QuantidadeMaiorQueDisponivel(t *testing.T) {
 	// Arrange
-	produtos := []application.Produto{
+	produtos := []domain.Produto{
 		{Nome: "Produto A", Validade: time.Now().Add(6 * 24 * time.Hour), Quantidade: 80},
 	}
 
 	// Act
 	produtoVendido := "Produto A"
 	quantidadeVendida := 70 // Vendendo mais do que a disponível
-	application.VenderProduto(&produtos, produtoVendido, quantidadeVendida)
+	domain.VenderProduto(&produtos, produtoVendido, quantidadeVendida)
 
 	// Assert
 	for _, p := range produtos {
@@ -74,7 +74,7 @@ func TestVenderProduto_QuantidadeMaiorQueDisponivel(t *testing.T) {
 
 func TestVendaDeProduto_AposExpositorAbastecido(t *testing.T) {
 	// Arrange
-	produtos := &[]application.Produto{
+	produtos := &[]domain.Produto{
 		{Nome: "Produto A", Validade: time.Now().Add(6 * 24 * time.Hour), Quantidade: 10},
 		{Nome: "Produto B", Validade: time.Now().Add(10 * 24 * time.Hour), Quantidade: 5},
 	}
@@ -82,12 +82,12 @@ func TestVendaDeProduto_AposExpositorAbastecido(t *testing.T) {
 	// Act
 	produtoVendido := "Produto A"
 	quantidadeVendida := 3
-	application.VenderProduto(produtos, produtoVendido, quantidadeVendida)
+	domain.VenderProduto(produtos, produtoVendido, quantidadeVendida)
 
 	// Assert
-	produtoEsperado := application.Produto{Nome: "Produto A", Validade: time.Now().Add(6 * 24 * time.Hour), Quantidade: 7}
+	produtoEsperado := domain.Produto{Nome: "Produto A", Validade: time.Now().Add(6 * 24 * time.Hour), Quantidade: 7}
 
-	if !application.VerificarProdutoNoExpositor(produtos, produtoEsperado) {
+	if !domain.VerificarProdutoNoExpositor(produtos, produtoEsperado) {
 		t.Errorf("Quantidade disponível do produto no expositor não foi reduzida corretamente após a venda")
 	}
 }
