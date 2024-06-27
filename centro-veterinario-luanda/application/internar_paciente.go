@@ -1,11 +1,6 @@
 package application
 
 import (
-	"fmt"
-	"os"
-
-	"path/filepath"
-
 	domain "github.com/Tito-Cazanga/tcazanga-estagio-2024-04/domain/repositorio"
 
 	entidade "github.com/Tito-Cazanga/tcazanga-estagio-2024-04/domain/entity"
@@ -16,14 +11,46 @@ type PacienteServico struct {
 }
 
 func NovoPaciente(repo domain.PacienteRepositorio) *PacienteServico {
-	return &PacienteServico{}
+	return &PacienteServico{Repo: repo}
 }
 
-func (v *PacienteServico) InternarPaciente(paciente string) {
-
+func (v *PacienteServico) InternarPaciente(id, nomePaciente string) error {
+	paciente, err := entidade.NovoPaciente(id, nomePaciente)
+	if err != nil {
+		return err
+	}
+	return v.Repo.Salvar(paciente)
 }
 
-// Função que verifica se paciente com o ID existe
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*// Função que verifica se paciente com o ID existe
 func PacienteExiste(id string) bool {
 	filePath := filepath.Join("/home/trainee/Desktop/tcazanga-estagio-2024-04/centro-veterinario-luanda/domain/repositorio",fmt.Sprintf("Paciente%s.txt", id))
 	_, err := os.Stat(filePath)
@@ -53,4 +80,6 @@ func SalvaPaciente(paciente entidade.Paciente) error {
 
 	fmt.Println("Dados do paciente salvos com sucesso.")
 	return nil
-}
+	}
+	*/
+
