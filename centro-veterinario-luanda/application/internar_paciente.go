@@ -1,6 +1,7 @@
 package application
 
 import (
+	"github.com/Tito-Cazanga/tcazanga-estagio-2024-04/adapter/inmem"
 	domain "github.com/Tito-Cazanga/tcazanga-estagio-2024-04/domain/repositorio"
 
 	entidade "github.com/Tito-Cazanga/tcazanga-estagio-2024-04/domain/entity"
@@ -14,72 +15,17 @@ func NovoPaciente(repo domain.PacienteRepositorio) *PacienteServico {
 	return &PacienteServico{Repo: repo}
 }
 
-func (v *PacienteServico) InternarPaciente(id, nomePaciente string) error {
-	paciente, err := entidade.NovoPaciente(id, nomePaciente)
+func (v *PacienteServico) InternarPaciente(id, nomePaciente, raca string) error {
+	paciente, err := entidade.NovoPaciente(id, nomePaciente, raca)
 	if err != nil {
 		return err
 	}
+	
+	paciente.Status = "Internado"
 	return v.Repo.Salvar(paciente)
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*// Função que verifica se paciente com o ID existe
-func PacienteExiste(id string) bool {
-	filePath := filepath.Join("/home/trainee/Desktop/tcazanga-estagio-2024-04/centro-veterinario-luanda/domain/repositorio",fmt.Sprintf("Paciente%s.txt", id))
-	_, err := os.Stat(filePath)
-	return !os.IsNotExist(err)
+func ConsultarPaciente(id string) (*entidade.Paciente, error) {
+	repo := inmem.NovoRepositorioemMemoriaPaciente("pacientes.csv")
+	return repo.EncontrarID(id)
 }
-
-// Função que salva os dados do paciente num ficheiro de texto
-func SalvaPaciente(paciente entidade.Paciente) error {
-	// Verifica se o Paciente já existe
-	if PacienteExiste(paciente.ID) {
-		return fmt.Errorf("paciente com o ID %s já existe", paciente.ID)
-	}
-
-	// Cria ou abre um ficheiro
-	filePath := filepath.Join("/home/trainee/Desktop/tcazanga-estagio-2024-04/centro-veterinario-luanda/domain/repositorio",fmt.Sprintf("Paciente%s.txt", paciente.Nome))
-	file, err := os.Create(filePath)
-	if err != nil {
-		return fmt.Errorf("falhou em criar o ficheiro: %v", err)
-	}
-	defer file.Close()
-
-	// Escreve os dados do paciente no ficheiro
-	_, err = fmt.Fprintf(file, "ID: %s\nNome: %s\nDataDeEntrada %s\n", paciente.ID, paciente.Nome, paciente.DataDeEntrada)
-	if err != nil {
-		return fmt.Errorf("falhou em escrever no ficheiro: %v", err)
-	}
-
-	fmt.Println("Dados do paciente salvos com sucesso.")
-	return nil
-	}
-	*/
-
