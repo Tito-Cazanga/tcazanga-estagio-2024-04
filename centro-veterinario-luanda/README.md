@@ -21,7 +21,7 @@ Instalação
 
 Para instalar o CVL, deves clonar o repositório:
 ```
-git clone github.com/Tito-Cazanga/tcazanga-estagio-2024-04
+git clone https://github.com/Tito-Cazanga/tcazanga-estagio-2024-04
 ```
 Certifique-se de entrar no Directorio *centro-veterinaria-luanda*
 
