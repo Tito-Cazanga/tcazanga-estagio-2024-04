@@ -18,8 +18,6 @@ type Paciente struct {
 }
 
 
-
-
 func NovoPaciente(id, nome, raca string) (*Paciente, error) {
 	if id == "" || nome == "" || raca == "" {
 		return nil, errors.New("data de entrada do paciente invalido")

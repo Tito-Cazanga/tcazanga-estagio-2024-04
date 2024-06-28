@@ -3,15 +3,16 @@ package application_test
 import (
 	"testing"
 
+
 	"github.com/Tito-Cazanga/tcazanga-estagio-2024-04/adapter/inmem"
 	"github.com/Tito-Cazanga/tcazanga-estagio-2024-04/application"
+
 )
 
 func TestInternarPaciente(t *testing.T) {
 	repo := inmem.NovoRepositorioemMemoriaPaciente("pacientes_test.csv")
 	servico := application.NovoPaciente(repo)
 
-	
 
 	t.Run("Deve internar paciente com dados válidos", func(t *testing.T) {
 		internarPacienteComSucesso(t, *servico, "0011", "Max", "Rafeiro")
@@ -25,7 +26,7 @@ func TestInternarPaciente(t *testing.T) {
 		verificarPacienteInternado(t, *repo, "0011", "Max", "Rafeiro")
 	})
 	
-	t.Run("Internar Paciente já internado", func(t *testing.T) {
+	t.Run("Não deve permite internar paciente já internado", func(t *testing.T) {
 		err := servico.InternarPaciente("0011", "Max", "Rafeiro")
 		if err == nil {
 			t.Errorf("Erro esperado ao internar paciente com mesmo ID, mas nenhum erro foi retornado")

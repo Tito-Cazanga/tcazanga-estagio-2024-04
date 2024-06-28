@@ -4,7 +4,6 @@ import (
 	"encoding/csv"
 	"errors"
 	"os"
-
 	domain "github.com/Tito-Cazanga/tcazanga-estagio-2024-04/domain/entity"
 )
 
