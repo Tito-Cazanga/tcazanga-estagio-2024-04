@@ -63,7 +63,7 @@ func main() {
 			fmt.Println("ID:", paciente.ID)
 			fmt.Println("Nome:", paciente.Nome)
 			fmt.Println("Raça:", paciente.Raca)
-			fmt.Println("Status:", paciente.Status)
+			fmt.Println("Status:", paciente.StatusInternamento)
 		},
 	}
 

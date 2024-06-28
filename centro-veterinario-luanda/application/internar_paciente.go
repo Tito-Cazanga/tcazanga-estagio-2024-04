@@ -28,7 +28,7 @@ func (v *PacienteServico) InternarPaciente(id, nomePaciente, raca string) error 
 		return errors.New("paciente com mesmo ID já existe")
 	}
 
-	paciente.Status = "Internado"
+	paciente.StatusInternamento = "Internado"
 	return v.Repo.Salvar(paciente)
 }
 func (v *PacienteServico) ConsultarPaciente(id string) (*entidade.Paciente, error) {

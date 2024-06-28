@@ -20,7 +20,7 @@ func NovoRepositorioemMemoriaPaciente(filePath string) *RepositorioemMemoriaPaci
 
 func (r *RepositorioemMemoriaPaciente) Salvar(p *domain.Paciente) error {
 	ficheiro, err := os.OpenFile(r.filePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-	
+
 	if err != nil {
 		return err
 	}
@@ -29,7 +29,7 @@ func (r *RepositorioemMemoriaPaciente) Salvar(p *domain.Paciente) error {
 	escrever := csv.NewWriter(ficheiro)
 	defer escrever.Flush()
 
-	gravar := []string{p.ID, p.Nome, p.Raca, p.Status}
+	gravar := []string{p.ID, p.Nome, p.Raca, p.StatusInternamento}
 	err = escrever.Write(gravar)
 	if err != nil {
 		return err
@@ -54,10 +54,10 @@ func (r *RepositorioemMemoriaPaciente) EncontrarID(id string) (*domain.Paciente,
 	for _, gravar := range gravars {
 		if gravar[0] == id {
 			return &domain.Paciente{
-				ID:   gravar[0],
-				Nome: gravar[1],
-				Raca: gravar[2],
-				Status: gravar[3],
+				ID:                 gravar[0],
+				Nome:               gravar[1],
+				Raca:               gravar[2],
+				StatusInternamento: gravar[3],
 			}, nil
 		}
 	}
