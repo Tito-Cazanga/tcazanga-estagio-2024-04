@@ -1,34 +1,66 @@
 package inmem
 
 import (
+	"encoding/csv"
 	"errors"
+	"os"
 
-	"github.com/Tito-Cazanga/tcazanga-estagio-2024-04/domain/entity"
+	domain "github.com/Tito-Cazanga/tcazanga-estagio-2024-04/domain/entity"
 )
 
-type  RepositorioemMemoriaPaciente struct {
-	pacientes map[string]*domain.Paciente
+type RepositorioemMemoriaPaciente struct {
+	filePath string
 }
 
-func NovoRepositorioemMemoriaPaciente() *RepositorioemMemoriaPaciente {
+func NovoRepositorioemMemoriaPaciente(filePath string) *RepositorioemMemoriaPaciente {
 	return &RepositorioemMemoriaPaciente{
-		pacientes: make(map[string]*domain.Paciente),
+		filePath: filePath,
 	}
 }
 
 func (r *RepositorioemMemoriaPaciente) Salvar(p *domain.Paciente) error {
-	if p.ID == "" {
-		return errors.New("ID do paciente invalido")
+	ficheiro, err := os.OpenFile(r.filePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	
+	if err != nil {
+		return err
 	}
-	r.pacientes[p.ID] = p
+	defer ficheiro.Close()
+
+	escrever := csv.NewWriter(ficheiro)
+	defer escrever.Flush()
+
+	gravar := []string{p.ID, p.Nome, p.Raca, p.Status}
+	err = escrever.Write(gravar)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
 func (r *RepositorioemMemoriaPaciente) EncontrarID(id string) (*domain.Paciente, error) {
-	p, exists := r.pacientes[id]
-	if !exists {
-		return nil, errors.New("paciente nao enontrado")
+	ficheiro, err := os.Open(r.filePath)
+	if err != nil {
+		return nil, err
 	}
-	return p, nil
-}
+	defer ficheiro.Close()
 
+	ler := csv.NewReader(ficheiro)
+	gravars, err := ler.ReadAll()
+	if err != nil {
+		return nil, err
+	}
+
+	for _, gravar := range gravars {
+		if gravar[0] == id {
+			return &domain.Paciente{
+				ID:   gravar[0],
+				Nome: gravar[1],
+				Raca: gravar[2],
+				Status: gravar[3],
+			}, nil
+		}
+	}
+
+	return nil, errors.New("paciente nao encontrado")
+}

@@ -1,8 +1,8 @@
 package domain
 
 import (
-	/*"errors"
-	"time"*/
+	"errors"
+	"time"
 )
 
 
@@ -11,17 +11,21 @@ const PacienteInternado = "Internado"
 type Paciente struct {
 	ID         		string
 	Nome       		string
-	DataDeEntrada 	string
+	Raca			string
+	DataDeEntrada 	time.Time
+	Status 			string
 }
 
-/*func NovoPaciente(id, nome string) (*Paciente, error) {
-	if id == "" || nome == "" {
+func NovoPaciente(id, nome, raca string) (*Paciente, error) {
+	if id == "" || nome == "" || raca == ""{
 		return nil, errors.New("data de entrada do paciente invalido")
 	}
 	
 	return &Paciente{
-		ID:         id,
-		Nome:       nome,
-		DataDeEntrada: time.Now(),
+		ID:         	id,
+		Nome:       	nome,
+		Raca:			raca,
+		DataDeEntrada: 	time.Now(),
+		Status:     	PacienteInternado,
 	}, nil
-}*/
+}

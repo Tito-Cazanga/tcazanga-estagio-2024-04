@@ -50,7 +50,7 @@ func main() {
 		Args: cobra.ExactArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
 			pacienteId := args[0]
-			
+
 			repo := inmem.NovoRepositorioemMemoriaPaciente("pacientes.csv")
 			servico := application.NovoPaciente(repo)
 			paciente, err := servico.ConsultarPaciente(pacienteId)
