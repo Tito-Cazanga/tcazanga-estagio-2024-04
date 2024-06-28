@@ -25,7 +25,7 @@ func (v *PacienteServico) InternarPaciente(id, nomePaciente, raca string) error 
 	return v.Repo.Salvar(paciente)
 }
 
-func ConsultarPaciente(id string) (*entidade.Paciente, error) {
+func (v *PacienteServico) ConsultarPaciente(id string) (*entidade.Paciente, error) {
 	repo := inmem.NovoRepositorioemMemoriaPaciente("pacientes.csv")
 	return repo.EncontrarID(id)
 }
